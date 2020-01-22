@@ -1,0 +1,3 @@
+#!/bin/bash
+
+scrot $(mktemp).png -e 'ls $f'

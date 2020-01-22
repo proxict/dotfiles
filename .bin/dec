@@ -1,0 +1,13 @@
+#!/bin/bash
+
+cipherFilename=$1
+plaintextFilename=${cipherFilename%.gpg}
+
+if [ -f ${plaintextFilename} ]; then
+    read -e -p "File ${plaintextFilename} already exists, overwrite? [y/N] " YN
+    if [[ $YN != "y" && $YN != "Y" ]]; then
+        echo "Operation canceled." && exit 0;
+    fi
+fi
+
+gpg -d ${cipherFilename} > ${plaintextFilename}

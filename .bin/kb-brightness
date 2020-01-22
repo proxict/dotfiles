@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [[ -z $1 ]]; then
+  echo "Usage: keyboard_backlight +1/-1"
+  exit 1
+fi
+
+# To grant permissions to this file, create udev rule in /etc/udev/rules.d/99-keyboard-leds.rules
+# DEVPATH=="/devices/platform/asus-nb-wmi/leds/asus::kbd_backlight", RUN+="/bin/chmod 0666 /sys/class/leds/asus::kbd_backlight/brightness"
+
+max=$(cat "/sys/class/leds/asus::kbd_backlight/max_brightness")
+brightness=$(cat "/sys/class/leds/asus::kbd_backlight/brightness")
+
+if [[ "$1" == "+1" ]]; then
+  if [[ "$brightness" -lt "$max" ]]; then
+    echo "$((brightness+1))" >> /sys/class/leds/asus\:\:kbd_backlight/brightness
+    fi
+elif [[ "$1" == "-1" ]]; then
+  if [[ "$brightness" -gt 0 ]]; then
+    echo "$((brightness-1))" >> /sys/class/leds/asus\:\:kbd_backlight/brightness
+    fi
+fi

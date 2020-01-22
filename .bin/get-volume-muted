@@ -1,0 +1,11 @@
+#!/bin/bash
+
+state=$(amixer get Master | grep -oE "\[(on|off)\]" | head -n1)
+if [ "${state}" == "[on]" ]; then
+	echo "false"
+elif [ "${state}" == "[off]" ]; then
+	echo "true"
+else
+	echo "error getting state"
+fi
+

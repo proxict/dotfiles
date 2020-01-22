@@ -1,0 +1,3 @@
+#!/bin/bash
+
+amixer set -q Master 5.0%- && amixer set -q Master 1+ unmute

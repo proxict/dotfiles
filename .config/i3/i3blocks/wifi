@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# MIT License
+# 
+# Copyright (c) 2020 Marek Bogusovsky
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+INTERFACE="${BLOCK_INSTANCE:-wlan0}"
+
+function showAllIps {
+    while read -r interface; do
+        IPs+="${interface}: $(ip addr show $interface | awk '/inet / { split($2, ip, "/"); printf "%s\r", ip[1] }')"
+    done <<< $(ip addr show up | awk '/state UP/ { split($2, iface, ":"); print iface[1] }')
+
+    notify-send "Assigned IPs:
+${IPs}"
+}
+
+function showAssignedIp {
+    if [[ "$(cat /sys/class/net/${1}/operstate)" = 'up' ]]; then
+        IP=$(ip addr show $1 | awk '/inet / { split($2, ip, "/"); print ip[1] }')
+        notify-send "Assigned IP: ${IP}"
+        echo -n ${IP} | xclip -selection clipboard &> /dev/null
+    else
+        notify-send "Interface ${1} is currently down"
+    fi
+}
+
+case $BLOCK_BUTTON in
+    1) showAssignedIp ${INTERFACE} ;;
+    3) showAllIps ;;
+esac
+
+[[ ! -d /sys/class/net/${INTERFACE}/wireless ]] ||
+    [[ "$(cat /sys/class/net/${INTERFACE}/operstate)" = 'down' ]] && echo " DOWN" && exit
+
+QUALITY=$(grep ${INTERFACE} /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')
+SSID=$(iwgetid -r)
+
+echo ${QUALITY}% [${SSID}]
+echo ${QUALITY}% [${SSID}]
+
+# colorize output based on signal quality
+if [[ ${QUALITY} -ge 80 ]]; then
+    echo "#00FF00"
+elif [[ ${QUALITY} -lt 80 ]]; then
+    echo "#FFF600"
+elif [[ ${QUALITY} -lt 60 ]]; then
+    echo "#FFAE00"
+elif [[ ${QUALITY} -lt 40 ]]; then
+    echo "#FF0000"
+fi
+

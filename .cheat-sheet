@@ -1,0 +1,59 @@
+# correct time to specific zone:
+timedatectl set-ntp true
+
+# entering time manually:
+timedatectl set-time "2019-12-31 18:17:16"
+
+# pacman
+pacman -Q     # list all installed packages
+pacman -Qq    # list all installed packages without version numbr (quiet)
+pacman -Qe    # list all explicitly installed packages
+pacman -Qdt   # list all orphaned packages
+pacman -Qn    # list packages installed from main repository
+pacman -Qm    # list packages installed from AUR
+pacman -Qo <file>   # get package owning provided file
+pacman -Ql <package> # get files provided by the package
+pacman -Qs    # search local repository for packages
+pacman -R     # remove package
+pacman -Rs    # remove package and it's dependencies
+pacman -Rns   # remove package with it's dependencies and system config files
+pacman -Sc    # clear cache of old packages
+
+# If yaourt fails on verifying a source...
+gpg --recv-keys <key>
+
+# get default gateway
+ip route
+
+# list all open ports in given network
+nmap 192.168.1.1/24
+
+# list cached arp from kernel
+ip neighbor
+
+# list IP addreses, mac addresses and names of all devices in the network
+sudo arp-scan -l
+
+# get an IP assigned to an active interface
+ifconfig $(ifconfig | grep RUNNING | grep -v LOOPBACK | awk -F: '{ print $1 }') | grep "inet " | awk '{print $2 }'
+
+# resize tmp partition on the fly
+sudo mount -o remount,size=10G tmpfs /tmp
+
+# output only a part of searched term with grep
+echo "Main PID: 535 (master)" | grep -oP '(?<=(PID):\s)[0-9]+'
+
+# unpack .deb package
+ar -vx package.deb && tar xvf data.tar.gz -C /target/directory
+
+# replace only part of match in sed
+echo "some code: MKTAG('m' ,  'p', '4',  'a'); return;" | sed -E "s|MKTAG\('([A-z0-9])'[, ]*'([A-z0-9])'[, ]*'([A-z0-9])'[, ]*'([A-z0-9])'\)|mp4tag(\"\1\2\3\4\")|g"
+
+# coredumps location (arch linux)
+/var/lib/systemd/coredump/
+
+# get sum of number of lines of files in a directory
+count=0; for f in $(find . -name '*.c' -o -name '*.cc' -o -name '*.h'); do ((count+=$(wc -l < $f))); done; echo $count
+
+# addr2line - get source file line corresponding to an address in a binary
+addr2line -e file.bin -a +0x4c37e

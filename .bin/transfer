@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Redirect output to tmpfile because we want to show progress bar
+tmpfile=$(mktemp -t transferXXX)
+curl --progress-bar --upload-file $1 https://transfer.sh/$(basename $1) >> $tmpfile;
+# awk 1 appends newline if needed (better than cat in this case)
+awk 1 $tmpfile;
+rm -f $tmpfile;

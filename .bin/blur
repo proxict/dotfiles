@@ -1,0 +1,8 @@
+#!/bin/bash
+
+[ ! -f $1 ] && echo "Usage: blur <img>" && exit 1
+
+out=$(mktemp)
+convert -scale 10% -blur 0x2.5 -resize 1000% $1 $out
+ls $out
+

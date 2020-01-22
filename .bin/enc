@@ -1,0 +1,8 @@
+#!/bin/bash
+
+gpg -e -r "Marek Bogusovsky" $1
+
+read -e -p "File $1 encrypted. Remove the original? [Y/n] " YN
+if [[ $YN == "y" || $YN == "Y" || $YN == "" ]]; then
+    shred $1 && rm -f $1
+fi

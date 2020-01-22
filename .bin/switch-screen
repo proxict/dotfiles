@@ -1,0 +1,17 @@
+#!/bin/bash
+
+currentPrimary=$(xrandr | grep primary | awk '{ print $1 }')
+numberOfConnected=$(xrandr | grep -o "\sconnected" | wc -l)
+
+if [[ ${numberOfConnected} -lt 2 ]]; then
+    echo "There is only one screen connected, please, connect another screen and try again." && exit 1
+fi
+
+if [[ "${currentPrimary}" == "eDP1" ]]; then
+    xrandr --output DP1 --mode 1920x1200 --primary --output eDP1 --off
+    setxkbmap -option "caps:swapescape"
+    xset r rate 200 40
+else
+    xrandr --output eDP1 --primary --mode 1920x1080 --output DP1 --off
+fi
+
