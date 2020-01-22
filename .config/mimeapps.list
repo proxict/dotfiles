@@ -1,0 +1,28 @@
+[Default Applications]
+x-scheme-handler/http=org.qutebrowser.qutebrowser.desktop
+x-scheme-handler/https=org.qutebrowser.qutebrowser.desktop
+x-scheme-handler/ftp=qutebrowser.desktop
+x-scheme-handler/chrome=qutebrowser.desktop
+text/html=org.qutebrowser.qutebrowser.desktop
+application/x-extension-htm=qutebrowser.desktop
+application/x-extension-html=qutebrowser.desktop
+application/x-extension-shtml=qutebrowser.desktop
+application/xhtml+xml=qutebrowser.desktop
+application/x-extension-xhtml=qutebrowser.desktop
+application/x-extension-xht=qutebrowser.desktop
+text/plain=nvim.desktop
+image/jpeg=feh.desktop
+x-schema-handler/msteams=teams.desktop
+
+[Added Associations]
+x-scheme-handler/http=qutebrowser.desktop;
+x-scheme-handler/https=qutebrowser.desktop;
+x-scheme-handler/ftp=qutebrowser.desktop;
+x-scheme-handler/chrome=qutebrowser.desktop;
+text/html=qutebrowser.desktop;
+application/x-extension-htm=qutebrowser.desktop;
+application/x-extension-html=qutebrowser.desktop;
+application/x-extension-shtml=qutebrowser.desktop;
+application/xhtml+xml=qutebrowser.desktop;
+application/x-extension-xhtml=qutebrowser.desktop;
+application/x-extension-xht=qutebrowser.desktop;
