@@ -94,4 +94,6 @@ if [ ${CHARGING} -eq 0 ]; then
         touch .battery-notification-lock
         notify-send -i /usr/share/icons/Adwaita/48x48/status/battery-level-0-charging-symbolic.symbolic.png -u normal "Low battery level!"
     fi
+else
+    rm -f .battery-notification-lock
 fi
