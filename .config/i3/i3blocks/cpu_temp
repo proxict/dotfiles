@@ -22,10 +22,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-case $BLOCK_BUTTON in
-	1) notify-send "<b>CPU hogs</b>:
+case ${BLOCK_BUTTON} in
+    1) notify-send "<b>CPU hogs:</b>
 $(ps axch -o cmd:15,%cpu --sort=-%cpu | head)" ;;
-	3) notify-send "<b>🖥 CPU module:</b>
+    3) notify-send "<b>CPU module:</b>
 - Shows CPU temperature.
 - Click to show intensive processes.
 - % is of single core." ;;
