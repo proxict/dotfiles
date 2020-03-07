@@ -30,13 +30,15 @@ bindsym $mod+Shift+g gaps inner current set 15; gaps outer current set 15
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec st
+bindsym $mod+Return exec --no-startup-id st
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
-bindsym $mod+d exec i3-dmenu-desktop
-bindsym $mod+Shift+d exec dmenu_run
+bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+Shift+d exec --no-startup-id dmenu_run
+
+bindsym $mod+c exec --no-startup-id "c=\\"$(dmenu-list-configs)\\"; if [ ! -z \\"$c\\" ]; then st -e nvim \\"$c\\"; fi"
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down
@@ -61,7 +63,7 @@ bindsym $mod+Shift+Right move right
 bindsym $mod+s split toggle
 bindsym $mod+f fullscreen toggle
 #bindsym $mod+e layout toggle split
-bindsym $mod+w exec dmenu-pass
+bindsym $mod+w exec --no-startup-id dmenu-pass
 bindsym $mod+Shift+space floating toggle
 
 # switch to workspace
@@ -135,7 +137,7 @@ bindsym XF86AudioMicMute exec --no-startup-id microphone-toggle && pkill -SIGRTM
 bindsym XF86TouchpadToggle exec --no-startup-id synclient TouchpadOff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')
 
 # Toggle keyboard layout
-bindsym $mod+space exec ~/.bin/toggle-kb-layout && pkill -SIGRTMIN+1 i3blocks
+bindsym $mod+space exec --no-startup-id ~/.bin/toggle-kb-layout && pkill -SIGRTMIN+1 i3blocks
 
 # Keyboard backlight control
 bindsym XF86KbdBrightnessUp exec --no-startup-id ~/.bin/kb-brightness +1 && pkill -SIGRTMIN+4 i3blocks
@@ -146,7 +148,7 @@ bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 5 && pkill -SIG
 bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && pkill -SIGRTMIN+2 i3blocks
 
 # Duplicate screen
-bindsym XF86Display exec switch-screen
+bindsym XF86Display exec --no-startup-id switch-screen
 
 #///////////////////////////////////////////////////////////////////////////////////////
 #/// Window colors
@@ -165,11 +167,12 @@ client.background       #ffffff
 #///////////////////////////////////////////////////////////////////////////////////////
 #/// Startup programs
 #///////////////////////////////////////////////////////////////////////////////////////
-exec --no-startup-id xcompmgr &
+exec --no-startup-id xcompmgr
 exec --no-startup-id ~/.fehbg
-exec --no-startup-id nm-applet &
-exec --no-startup-id dunst &
-exec --no-startup-id unclutter &
+exec --no-startup-id nm-applet
+exec --no-startup-id dunst
+#exec --no-startup-id bashbullet
+exec --no-startup-id unclutter
 exec --no-startup-id xflux -l 50.1 -g 14.4
 
 #///////////////////////////////////////////////////////////////////////////////////////
