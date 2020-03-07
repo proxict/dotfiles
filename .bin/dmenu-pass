@@ -2,7 +2,7 @@
 
 accounts=$(grep -v "^#" .lpass-accounts)
 accountNames=$(echo "${accounts}" | cut -d ':' -f1)
-chosenAccountName=$(echo "${accountNames}" | dmenu -i -l 10)
+chosenAccountName=$(echo "${accountNames}" | dmenu -z -l 10)
 
 # Nothing selected, exit
 [ "${chosenAccountName}" != "" ] || exit
@@ -12,6 +12,7 @@ chosenAccontEmail=$(echo "${accounts}" | grep "${chosenAccountName}:" | cut -d '
 # Already logged in to this account
 lpass status | grep "${chosenAccontEmail}" && notify-send "${chosenAccountName} account already active." && exit
 
+setxkbmap us
 message=$(lpass login ${chosenAccontEmail})
 notify-send "${message}"
 
