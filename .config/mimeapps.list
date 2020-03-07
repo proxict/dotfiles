@@ -26,3 +26,4 @@ application/x-extension-shtml=qutebrowser.desktop;
 application/xhtml+xml=qutebrowser.desktop;
 application/x-extension-xhtml=qutebrowser.desktop;
 application/x-extension-xht=qutebrowser.desktop;
+application/pdf=org.pwmt.zathura-pdf-mupdf.desktop;
