@@ -57,3 +57,6 @@ count=0; for f in $(find . -name '*.c' -o -name '*.cc' -o -name '*.h'); do ((cou
 
 # addr2line - get source file line corresponding to an address in a binary
 addr2line -e file.bin -a +0x4c37e
+
+# use vim as a command line file editor
+vim FILENAME -i NONE -u NORC -U NONE -nNes "+/tscpd.conf" "+norm dd" "+norm gg" "+norm P" "+wq"
