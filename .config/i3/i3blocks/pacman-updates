@@ -22,31 +22,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-if ! type -P fakeroot >/dev/null; then
-	error 'Cannot find the fakeroot binary.'
-	exit 1
-fi
-
-if [[ -z $CHECKUPDATES_DB ]]; then
-	CHECKUPDATES_DB="${TMPDIR:-/tmp}/checkup-db-${USER}/"
-fi
-
-trap 'rm -f $CHECKUPDATES_DB/db.lck' INT TERM EXIT
-
-DBPath="${DBPath:-/var/lib/pacman/}"
-eval $(awk -F' *= *' '$1 ~ /DBPath/ { print $1 "=" $2 }' /etc/pacman.conf)
-
-mkdir -p "$CHECKUPDATES_DB"
-ln -s "${DBPath}/local" "$CHECKUPDATES_DB" &> /dev/null
-fakeroot -- pacman -Sy --dbpath "$CHECKUPDATES_DB" --logfile /dev/null &> /dev/null
-numberOfUpdates=`fakeroot pacman -Su -p --dbpath "$CHECKUPDATES_DB" | grep -v "Starting full system upgrade" | wc -l`
-echo ${numberOfUpdates}
-echo ${numberOfUpdates}
-if [ "${numberOfUpdates}" -gt "0" ]; then
-    echo "#00FF00"
-fi
-exit 0
-
+NUMBER_OF_UPDATES=$(checkupdates | wc -l)
+echo ${NUMBER_OF_UPDATES}
+echo ${NUMBER_OF_UPDATES}
+[ "${NUMBER_OF_UPDATES}" -gt "0" ] && echo "#00FF00"
 
 ## To automatically update the status of updates after pacman update,
 ## create a pacman hook /etc/pacman.d/hooks/10-after-update-notifier.hook:
