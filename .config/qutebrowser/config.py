@@ -176,7 +176,7 @@ c.auto_save.session = True
 
 ## Background color of an error message.
 ## Type: QssColor
-# c.colors.messages.error.bg = 'red'
+c.colors.messages.error.bg = '#fc2652'
 
 ## Border color of an error message.
 ## Type: QssColor
@@ -184,7 +184,7 @@ c.auto_save.session = True
 
 ## Foreground color of an error message.
 ## Type: QssColor
-# c.colors.messages.error.fg = 'white'
+c.colors.messages.error.fg = '#2c2c2c'
 
 ## Background color of an info message.
 ## Type: QssColor
@@ -318,23 +318,23 @@ c.colors.statusbar.command.private.bg = '#9000ff'
 
 ## Background color of unselected even tabs.
 ## Type: QtColor
-# c.colors.tabs.even.bg = 'darkgrey'
+c.colors.tabs.even.bg = '#3A3A3A'
 
 ## Foreground color of unselected even tabs.
 ## Type: QtColor
-# c.colors.tabs.even.fg = 'white'
+c.colors.tabs.even.fg = 'white'
 
 ## Color for the tab indicator on errors.
 ## Type: QtColor
-# c.colors.tabs.indicator.error = '#ff0000'
+c.colors.tabs.indicator.error = '#ff622e'
 
 ## Color gradient start for the tab indicator.
 ## Type: QtColor
-# c.colors.tabs.indicator.start = '#0000aa'
+c.colors.tabs.indicator.start = '#ffe22e'
 
 ## Color gradient end for the tab indicator.
 ## Type: QtColor
-# c.colors.tabs.indicator.stop = '#00aa00'
+c.colors.tabs.indicator.stop = '#a6e22e'
 
 ## Color gradient interpolation system for the tab indicator.
 ## Type: ColorSystem
@@ -347,27 +347,59 @@ c.colors.statusbar.command.private.bg = '#9000ff'
 
 ## Background color of unselected odd tabs.
 ## Type: QtColor
-# c.colors.tabs.odd.bg = 'grey'
+c.colors.tabs.odd.bg = c.colors.tabs.even.bg
 
 ## Foreground color of unselected odd tabs.
 ## Type: QtColor
-# c.colors.tabs.odd.fg = 'white'
+c.colors.tabs.odd.fg = 'white'
 
 ## Background color of selected even tabs.
 ## Type: QtColor
-# c.colors.tabs.selected.even.bg = 'black'
+c.colors.tabs.selected.even.bg = '#707070'
 
 ## Foreground color of selected even tabs.
 ## Type: QtColor
-# c.colors.tabs.selected.even.fg = 'white'
+c.colors.tabs.selected.even.fg = 'white'
 
 ## Background color of selected odd tabs.
 ## Type: QtColor
-# c.colors.tabs.selected.odd.bg = 'black'
+c.colors.tabs.selected.odd.bg = c.colors.tabs.selected.even.bg
 
 ## Foreground color of selected odd tabs.
 ## Type: QtColor
-# c.colors.tabs.selected.odd.fg = 'white'
+c.colors.tabs.selected.odd.fg = c.colors.tabs.selected.even.fg
+
+## Background color of pinned even tabs.
+## Type: QtColor
+c.colors.tabs.pinned.even.bg = '#2c2c2c'
+
+## Foreground color of pinned even tabs.
+## Type: QtColor
+c.colors.tabs.pinned.even.fg = 'white'
+
+## Background color of pinned odd tabs.
+## Type: QtColor
+c.colors.tabs.pinned.odd.bg = c.colors.tabs.pinned.even.bg
+
+## Foreground color of pinned odd tabs.
+## Type: QtColor
+c.colors.tabs.pinned.odd.fg = c.colors.tabs.pinned.even.fg
+
+## Background color of pinned selected even tabs.
+## Type: QtColor
+c.colors.tabs.pinned.selected.even.bg = '#707070'
+
+## Foreground color of pinned selected even tabs.
+## Type: QtColor
+c.colors.tabs.pinned.selected.even.fg = 'white'
+
+## Background color of pinned selected odd tabs.
+## Type: QtColor
+c.colors.tabs.pinned.selected.odd.bg = c.colors.tabs.pinned.selected.even.bg
+
+## Foreground color of pinned selected odd tabs.
+## Type: QtColor
+c.colors.tabs.pinned.selected.odd.fg = c.colors.tabs.pinned.selected.even.fg
 
 ## Background color for webpages if unset (or empty to use the theme's
 ## color)
@@ -988,7 +1020,7 @@ c.messages.timeout = 3000
 
 ## The rounding radius for the edges of prompts.
 ## Type: Int
-c.prompt.radius = 5
+c.prompt.radius = 0
 
 ## Additional arguments to pass to Qt, without leading `--`. With
 ## QtWebEngine, some Chromium arguments (see
