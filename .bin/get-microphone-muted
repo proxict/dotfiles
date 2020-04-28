@@ -1,11 +1,15 @@
 #!/bin/bash
 
-state=$(amixer get Capture | grep -oE "\[(on|off)\]" | head -n1)
-if [ "${state}" == "[on]" ]; then
-	echo "false"
-elif [ "${state}" == "[off]" ]; then
-	echo "true"
-else
-	echo "error getting state"
-fi
+#state=$(amixer get Capture | grep -oE "\[(on|off)\]" | head -n1)
+#if [ "${state}" == "[on]" ]; then
+#	echo "false"
+#elif [ "${state}" == "[off]" ]; then
+#	echo "true"
+#else
+#	echo "error getting state"
+#fi
 
+state=$(pulsemixer --id $(pulsemixer --list-sources | awk '/Default/ { print $3 }' | tr -d ,) --get-mute)
+[ ${state} -eq 1 ] && echo "true" && exit 0
+[ ${state} -eq 0 ] && echo "false" && exit 0
+echo "error getting state" && exit 1
