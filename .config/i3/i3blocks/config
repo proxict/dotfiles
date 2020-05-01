@@ -39,22 +39,14 @@ interval=3600
 label=
 [separator]
 
-[batteries]
-color=#ACACAC
-interval=5
-[separator]
-
 [wifi]
 interval=3
-instance=wlp3s0
+instance=enp0s31f6
 label=
 [separator]
 
-[brightness]
-color=#ACACAC
-label=🔆
-signal=2
-interval=once
+[nordvpn]
+interval=5
 [separator]
 
 [microphone]
