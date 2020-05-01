@@ -33,7 +33,12 @@ esac
 
 source colors
 
-CPU_TEMP=$(sensors | awk '/^Package id 0:/ {print $4}' | sed 's/^.//' | cut -d \. -f1)
+#CPU_TEMP=$(sensors | awk '/^Package id 0:/ {print $4}' | sed 's/^.//' | cut -d \. -f1)
+CPU_TEMP=0
+while read -r temp; do
+    CPU_TEMP=$(( (${CPU_TEMP} + ${temp}) / 2 ))
+done <<< $(sensors | perl -n -e '/Core \d+:\s+\+(\d+)/ && print $1."\n"')
+
 if [ "${CPU_TEMP}" -lt 15 ]; then
     LABEL=" "; COLOR="#FFFFFF"
 elif [ "${CPU_TEMP}" -lt 30 ]; then
