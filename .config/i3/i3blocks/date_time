@@ -26,6 +26,6 @@ date '+%H:%M:%S'
 
 case $BLOCK_BUTTON in
     1) gsimplecal ;;
-    3) st -e nvim +Calendar ;;
+    3) calendar ;;
     *) ;;
 esac

@@ -13,6 +13,7 @@ gaps outer 15
 workspace 1 gaps inner 0
 workspace 1 gaps outer 0
 for_window [class="qutebrowser"] border pixel 0
+for_window [title="calendar.vim"] floating enable, resize set 800 600, move absolute position center
 
 bindsym $mod+i gaps inner current plus 5
 bindsym $mod+o gaps outer current plus 5
@@ -171,7 +172,6 @@ exec --no-startup-id xcompmgr
 exec --no-startup-id ~/.fehbg
 exec --no-startup-id nm-applet
 exec --no-startup-id dunst
-#exec --no-startup-id bashbullet
 exec --no-startup-id unclutter
 exec --no-startup-id xflux -l 50.1 -g 14.4
 
