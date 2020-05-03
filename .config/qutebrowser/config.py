@@ -355,11 +355,11 @@ c.colors.tabs.odd.fg = 'white'
 
 ## Background color of selected even tabs.
 ## Type: QtColor
-c.colors.tabs.selected.even.bg = '#707070'
+c.colors.tabs.selected.even.bg = '#FABD2F'
 
 ## Foreground color of selected even tabs.
 ## Type: QtColor
-c.colors.tabs.selected.even.fg = 'white'
+c.colors.tabs.selected.even.fg = '#2c2c2c'
 
 ## Background color of selected odd tabs.
 ## Type: QtColor
