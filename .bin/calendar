@@ -39,4 +39,4 @@
 #set secure
 ####################################################
 
-st -t 'calendar.vim' -e nvim -u ~/.calendar-vimrc +Calendar 2>/dev/null
+st -t 'calendar.vim-33b067d9-70a0-40df-9a11-dbe3e0b55ec6' -e nvim -u ~/.calendar-vimrc +Calendar 2>/dev/null
