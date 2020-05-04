@@ -1,0 +1,41 @@
+#!/bin/bash
+
+[ $UID == 0 ] || (>&2 echo "You must run this script as root" && exit 1)
+
+DEV_PATH="/sys/devices/platform/nct6775.656/hwmon/hwmon2"
+
+# Check that the device specified exists
+[ ! -d ${DEV_PATH} ] && >&2 echo "Device nct6775.656 not found!" && exit 1
+[ ! -f "${DEV_PATH}/pwm2_enable" ] && >&2 echo "Device nct6775.656/pwm2 not found!" && exit 1
+
+# Check that sensors and perl are installed
+command -v sensors >/dev/null 2>&1 || (>&2 echo "sensors command not found" && exit 1)
+command -v perl >/dev/null 2>&1 || (>&2 echo "perl not found" && exit 1)
+
+# Enable PWM on the device
+echo 1 > "${DEV_PATH}/pwm2_enable"
+
+function setPwm() {
+    echo "$1" > "${DEV_PATH}/pwm2"
+}
+
+# Periodically check CPU temperature and set PWM output accordingly
+while true; do
+    CPU_TEMP=0
+    while read -r temp; do
+        CPU_TEMP=$(( (${CPU_TEMP} + ${temp}) / 2 ))
+    done <<< $(sensors | perl -n -e '/Core \d+:\s+\+(\d+)/ && print $1."\n"')
+    OLD_PWM=${PWM:-255}
+    PWM=20
+    [ ${CPU_TEMP} -lt 25 ] && PWM=0
+    [ ${CPU_TEMP} -gt 35 ] && PWM=20
+    [ ${CPU_TEMP} -gt 40 ] && PWM=40
+    [ ${CPU_TEMP} -gt 45 ] && PWM=60
+    [ ${CPU_TEMP} -gt 50 ] && PWM=80
+    [ ${CPU_TEMP} -gt 55 ] && PWM=100
+    [ ${CPU_TEMP} -gt 60 ] && PWM=120
+    [ ${CPU_TEMP} -gt 65 ] && PWM=140
+    [ ${OLD_PWM} -ne ${PWM} ] && echo "Setting PWM to ${PWM}" && setPwm ${PWM}
+    OLD_PWM=${PWM}
+    sleep 5
+done
