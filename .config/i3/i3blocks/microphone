@@ -31,8 +31,8 @@ source colors
 
 muted=$(get-microphone-muted)
 if [ "${muted}" = "true" ]; then
-  colorize "#FF0000" ""
+  colorize "red" ""
 else
-  colorize "#ACACAC" ""
+  colorize "gray" ""
 fi
 

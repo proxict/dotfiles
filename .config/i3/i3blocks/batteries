@@ -29,6 +29,7 @@ source colors
 TOTAL_BATTERY_POWER=0
 BATTERY_INDEX=0
 CHARGING=0
+LABELS=""
 while read -r battery; do
     BATTERY_INFO=$(echo ${battery} | grep -E "Battery [0-9]+")
     if [[ "X${BATTERY_INFO}" = "X" ]]; then
@@ -45,17 +46,9 @@ while read -r battery; do
 
     TOTAL_BATTERY_POWER=$(( TOTAL_BATTERY_POWER + ${BATTERY_POWER}))
 
-    if [ "${BATTERY_POWER}" -lt 15 ]; then
-        LABEL=""; COLOR="#FF0000" # 0
-    elif [ "${BATTERY_POWER}" -lt 30 ]; then
-        LABEL=""; COLOR="#FF8000" # 25
-    elif [ "${BATTERY_POWER}" -lt 60 ]; then
-        LABEL=""; COLOR="#FFEF00" # 50
-    elif [ "${BATTERY_POWER}" -lt 80 ]; then
-        LABEL=""; COLOR="#BCFF00" # 75
-    else
-        LABEL=""; COLOR="#FFFFFF" # 100
-    fi
+
+    LABEL_INDEX=$(( 4 * (${BATTERY_POWER} + 20) / 100 ))
+    LABEL=${LABELS:${LABEL_INDEX}:1}
 
     if [ ${CHARGING} -eq 1 ]; then
         LABEL="${LABEL} "
@@ -65,6 +58,7 @@ while read -r battery; do
         echo -n " + "
     fi
 
+    COLOR=$(interpolateColor "#00ff00" "#ff0000" "${QUALITY}")
     echo -n "${LABEL} "
     colorizeBegin ${COLOR}
     echo -n "${BATTERY_POWER}%"
@@ -89,10 +83,10 @@ if [ ${CHARGING} -eq 0 ]; then
         systemctl suspend
     elif [ "${TOTAL_BATTERY_POWER}" -le 10 ]; then
         rm -f .battery-notification-lock
-        notify-send -i /usr/share/icons/Adwaita/48x48/status/battery-level-0-charging-symbolic.symbolic.png -u critical "Battery level critically low!"
+        notify-send -a "Battery" -i /usr/share/icons/Adwaita/48x48/status/battery-level-0-charging-symbolic.symbolic.png -u critical " " "Battery level critically low!"
     elif [ "${TOTAL_BATTERY_POWER}" -le 20 ] && [ ! -f .battery-notification-lock ]; then
         touch .battery-notification-lock
-        notify-send -i /usr/share/icons/Adwaita/48x48/status/battery-level-0-charging-symbolic.symbolic.png -u normal "Low battery level!"
+        notify-send -a "Battery" -i /usr/share/icons/Adwaita/48x48/status/battery-level-0-charging-symbolic.symbolic.png -u normal " " "Low battery level!"
     fi
 else
     rm -f .battery-notification-lock

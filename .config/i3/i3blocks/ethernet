@@ -22,37 +22,34 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-case ${BLOCK_BUTTON} in
-    1) notify-send "<b>CPU hogs:</b>
-$(ps axch -o cmd:15,%cpu --sort=-%cpu | head)" ;;
-    3) notify-send "<b>CPU module:</b>
-- Shows CPU temperature.
-- Click to show intensive processes.
-- % is of single core." ;;
-esac
+INTERFACE="${BLOCK_INSTANCE:-enp0s25}"
 
 source colors
 
-#CPU_TEMP=$(sensors | awk '/^Package id 0:/ {print $4}' | sed 's/^.//' | cut -d \. -f1)
-CPU_TEMP=0
-while read -r temp; do
-    CPU_TEMP=$(( (${CPU_TEMP} + ${temp}) / 2 ))
-done <<< $(sensors | perl -n -e '/Core \d+:\s+\+(\d+)/ && print $1."\n"')
+function showAllIps {
+    while read -r interface; do
+        IPs+="${interface}: $(ip addr show $interface | awk '/inet / { split($2, ip, "/"); printf "%s\r", ip[1] }')"
+    done <<< $(ip addr show up | awk '/state UP/ { split($2, iface, ":"); print iface[1] }')
 
-if [ "${CPU_TEMP}" -lt 15 ]; then
-    LABEL=" "; COLOR="#FFFFFF"
-elif [ "${CPU_TEMP}" -lt 30 ]; then
-    LABEL=" "; COLOR="#00FF00"
-elif [ "${CPU_TEMP}" -lt 60 ]; then
-    LABEL=" "; COLOR="#FFEF00"
-elif [ "${CPU_TEMP}" -lt 80 ]; then
-    LABEL=" "; COLOR="#FF8000"
-else
-    LABEL=" "; COLOR="#FF0000"
-fi
+    notify-send "Ethernet" "Assigned IPs:
+    ${IPs}"
+}
 
-echo -n "${LABEL}"
-colorizeBegin ${COLOR}
-echo -n "${CPU_TEMP}°C"
-colorizeEnd
+function showAssignedIp {
+    if [[ "$(cat /sys/class/net/${1}/operstate)" = 'up' ]]; then
+        IP=$(ip addr show $1 | awk '/inet / { split($2, ip, "/"); print ip[1] }')
+        notify-send "${1}" "Assigned IP: ${IP}"
+        echo -n ${IP} | xclip -selection clipboard &> /dev/null
+    else
+        notify-send "Ethernet" "Interface ${1} is currently down"
+    fi
+}
+
+case $BLOCK_BUTTON in
+    1) showAssignedIp ${INTERFACE} ;;
+    3) showAllIps ;;
+esac
+
+echo
+([[ "$(cat /sys/class/net/${INTERFACE}/operstate)" = 'up' ]] && printColor "green") || printColor "red"
 

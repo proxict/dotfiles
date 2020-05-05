@@ -42,7 +42,7 @@ fi
 
 muted=$(get-volume-muted)
 if [ "${muted}" = "true" ]; then
-  colorize "#FF0000" "${volumeLevel}"
+  colorize "red" "${volumeLevel}"
 else
   echo ${volumeLevel}
 fi

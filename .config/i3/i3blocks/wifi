@@ -29,17 +29,17 @@ function showAllIps {
         IPs+="${interface}: $(ip addr show $interface | awk '/inet / { split($2, ip, "/"); printf "%s\r", ip[1] }')"
     done <<< $(ip addr show up | awk '/state UP/ { split($2, iface, ":"); print iface[1] }')
 
-    notify-send "Assigned IPs:
-${IPs}"
+    notify-send "WiFi" "Assigned IPs:
+    ${IPs}"
 }
 
 function showAssignedIp {
     if [[ "$(cat /sys/class/net/${1}/operstate)" = 'up' ]]; then
         IP=$(ip addr show $1 | awk '/inet / { split($2, ip, "/"); print ip[1] }')
-        notify-send "Assigned IP: ${IP}"
+        notify-send "${1}" "Assigned IP: ${IP}"
         echo -n ${IP} | xclip -selection clipboard &> /dev/null
     else
-        notify-send "Interface ${1} is currently down"
+        notify-send "WiFi" "Interface ${1} is currently down"
     fi
 }
 
@@ -58,13 +58,4 @@ echo ${QUALITY}% [${SSID}]
 echo ${QUALITY}% [${SSID}]
 
 # colorize output based on signal quality
-if [[ ${QUALITY} -ge 80 ]]; then
-    echo "#00FF00"
-elif [[ ${QUALITY} -lt 80 ]]; then
-    echo "#FFF600"
-elif [[ ${QUALITY} -lt 60 ]]; then
-    echo "#FFAE00"
-elif [[ ${QUALITY} -lt 40 ]]; then
-    echo "#FF0000"
-fi
-
+echo $(interpolateColor "#00ff00" "#ff0000" "${QUALITY}")

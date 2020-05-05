@@ -22,12 +22,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-case $BLOCK_BUTTON in
-	1) notify-send "<b> Memory hogs:</b>
-$(ps axch -o cmd:15,rss --sort=-rss | head | awk '{print $1, ($2>=1000 ? ($2>=1000000 ? sprintf("%0.1f", $2 / 1000000) "GB" : sprintf("%0.1f", $2 / 1000) "MB") : $2 "KB")}' | column -t)" ;;
-	3) notify-send "<b> Memory module:</b>
-- Shows Memory Used/Total.
-- Click to show memory hogs." ;;
+case ${BLOCK_BUTTON} in
+    1) notify-send "CPU hogs:" "$(ps axch -o cmd:15,%cpu --sort=-%cpu | head)" ;;
 esac
 
-free -h | awk '/^Mem:/ {print $3 "/" $2}'
+source colors
+
+CPU_TEMP=$(cpu-core-temp)
+CPU_MAX=70
+
+LABELS=""
+
+# ( (${CPU_TEMP} + (${CPU_MAX} / 5)) / (${CPU_MAX} / 5) ) * 4 / 5 ==
+# ((x + (y / 5)) / (y / 5)) * 4 / 5 ==
+LABEL_INDEX=$(( 4 * (${CPU_TEMP} + ${CPU_MAX} / 5) / ${CPU_MAX} ))
+LABEL=${LABELS:${LABEL_INDEX}:1}
+
+COLOR=$(interpolateColor "#00ff00" "#ff0000" $(( ${CPU_TEMP} * 100 / ${CPU_MAX} )) )
+
+echo -n "${LABEL} "
+colorizeBegin ${COLOR}
+echo -n "${CPU_TEMP}°C"
+colorizeEnd
+

@@ -22,10 +22,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+source colors
+
 NUMBER_OF_UPDATES=$(checkupdates | wc -l)
 echo ${NUMBER_OF_UPDATES}
-echo ${NUMBER_OF_UPDATES}
-[ "${NUMBER_OF_UPDATES}" -gt "0" ] && echo "#00FF00"
+[ "${NUMBER_OF_UPDATES}" -gt "0" ] && printColor "green"
 
 ## To automatically update the status of updates after pacman update,
 ## create a pacman hook /etc/pacman.d/hooks/10-after-update-notifier.hook:

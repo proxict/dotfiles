@@ -22,33 +22,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-function toColor() {
-    [ ${1:0:1} == "#" ] && echo -n "${1}" && return 0
-    case $1 in
-        "gray") echo -n "#acacac" ;;
-        "magenta") echo -n "#8D20AE" ;;
-        "green") echo -n "#a6e22e" ;;
-        "red") echo -n "#ba3232" ;;
-        *) echo -n "#ff00e0" ;; # error colour
-    esac
-}
+source colors
 
-function printColor() {
-    echo $(toColor $1) && echo $(toColor $1)
-}
+case $BLOCK_BUTTON in
+	1) notify-send " Memory hogs:" "$(ps axch -o cmd:15,rss --sort=-rss | head | awk '{print $1, ($2>=1000 ? ($2>=1000000 ? sprintf("%0.1f", $2 / 1000000) "GB" : sprintf("%0.1f", $2 / 1000) "MB") : $2 "KB")}' | column -t)" ;;
+esac
 
-function colorize {
-  echo "<span foreground=\"$(toColor $1)\">${2}</span>"
-}
+MEM_FREE=$(free -m | awk '/^Mem:/ {print $3}')
+MEM_AVAILABLE=$(free -m | awk '/^Mem:/ {print $2}')
+MEM_USED_PERCENTAGE=$(( ${MEM_FREE} * 100 / ${MEM_AVAILABLE} ))
 
-function colorizeBegin {
-  echo -n "<span foreground=\"$(toColor $1)\">"
-}
+free -h | awk '/^Mem:/ {print $3 "/" $2}'
 
-function colorizeEnd {
-  echo $@ "</span>"
-}
-
-function interpolateColor {
-    ~/cpp_programming/color-map/build/bin/color-map "${1}" "${2}" "${3}"
-}
+COLOR=${COLOR:-$(interpolateColor "#00ff00" "#ff0000" "${MEM_USED_PERCENTAGE}")}
+echo "${COLOR}"
+echo "${COLOR}"
