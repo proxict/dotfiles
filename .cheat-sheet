@@ -60,3 +60,6 @@ addr2line -e file.bin -a +0x4c37e
 
 # use vim as a command line file editor
 vim FILENAME -i NONE -u NORC -U NONE -nNes "+/tscpd.conf" "+norm dd" "+norm gg" "+norm P" "+wq"
+
+# mount drive with write permissions for everyone
+sudo mount /dev/sdb2 /mnt/ -o umask=000
