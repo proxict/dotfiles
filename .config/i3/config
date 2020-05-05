@@ -179,7 +179,7 @@ exec --no-startup-id xflux -l 50.1 -g 14.4
 #/// Status bar
 #///////////////////////////////////////////////////////////////////////////////////////
 bar {
-    font pango:mono 10
+    font pango:DejaVu Sans Mono:style=Oblique 11
 
     colors {
         statusline  #888888
