@@ -70,7 +70,7 @@ signal=3
 interval=once
 [separator]
 
-[date_time]
+[date-time]
 color=#ACACAC
 #label=
 #label=📅
