@@ -157,8 +157,8 @@ bindsym XF86Display exec --no-startup-id switch-screen
 
 # class                 header  header  header  indicator window
 #                       border  backgr. text    color     border
-client.focused          #FF0000 #FF0000 #FF0000 #A3F439   #00C8FF
-client.focused_inactive #FF0000 #FF0000 #FF0000 #0058AA   #0058AA
+client.focused          #FF0000 #FF0000 #FF0000 #A6E22E   #FABD2F
+client.focused_inactive #FF0000 #FF0000 #FF0000 #0058AA   #EBDBB2
 client.unfocused        #FF0000 #FF0000 #FF0000 #222222   #222222
 client.urgent           #FF0000 #FF0000 #FF0000 #FFFFFF   #FFFFFF
 client.placeholder      #FF0000 #FF0000 #FF0000 #FFFFFF   #FFFFFF
@@ -186,7 +186,7 @@ bar {
         background  #303030
 
 #       class              border backgrd text
-        focused_workspace  #191919 #191919 #00C8FF
+        focused_workspace  #191919 #191919 #FABD2F
         active_workspace   #191919 #191919 #6b6b6b
         inactive_workspace #191919 #191919 #423e32
         urgent_workspace   #191919 #191919 #c7a551
