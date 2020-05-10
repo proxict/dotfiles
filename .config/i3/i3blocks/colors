@@ -50,5 +50,5 @@ function colorizeEnd {
 }
 
 function interpolateColor {
-    ~/cpp_programming/color-map/build/bin/color-map "${1}" "${2}" "${3}"
+    color-map "${1}" "${2}" "${3}"
 }
