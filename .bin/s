@@ -1,15 +1,7 @@
 #!/bin/bash
 
-if [[ -n $1 && $1 == "-h" ]]; then
-    export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -l -g ""'
-fi
-
-if [[ -n $1 && $1 != "-h" ]]; then
-    QUERY="-q $1"
-fi
+[[ -n $1 && $1 == "-h" ]] && export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -l -g ""'
+[[ -n $1 && $1 != "-h" ]] && QUERY="-q $1"
 
 file=$(fzf ${QUERY})
-if [[ -n $file && -f $file ]]; then
-    ls ${file}
-    nvim $file
-fi
+[[ -n ${file} && -f ${file} ]] && ls "${file}" && nvim "${file}"
