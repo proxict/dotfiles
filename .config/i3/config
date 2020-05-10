@@ -157,8 +157,8 @@ bindsym XF86Display exec --no-startup-id switch-screen
 
 # class                 header  header  header  indicator window
 #                       border  backgr. text    color     border
-client.focused          #FF0000 #FF0000 #FF0000 #A6E22E   #FABD2F
-client.focused_inactive #FF0000 #FF0000 #FF0000 #0058AA   #EBDBB2
+client.focused          #FF0000 #FF0000 #FF0000 #EBDBB2   #FABD2F
+client.focused_inactive #FF0000 #FF0000 #FF0000 #EBDBB2   #EBDBB2
 client.unfocused        #FF0000 #FF0000 #FF0000 #222222   #222222
 client.urgent           #FF0000 #FF0000 #FF0000 #FFFFFF   #FFFFFF
 client.placeholder      #FF0000 #FF0000 #FF0000 #FFFFFF   #FFFFFF
@@ -189,7 +189,7 @@ bar {
         focused_workspace  #191919 #191919 #FABD2F
         active_workspace   #191919 #191919 #6b6b6b
         inactive_workspace #191919 #191919 #423e32
-        urgent_workspace   #191919 #191919 #c7a551
+        urgent_workspace   #191919 #191919 #EBDBB2
     }
 
     status_command i3blocks -c ~/.config/i3/i3blocks/config
