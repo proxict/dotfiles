@@ -137,6 +137,7 @@ config.bind('yt', 'yank title')
 config.bind('yy', 'yank')
 config.bind('{{', 'navigate prev -t')
 config.bind('}}', 'navigate next -t')
+config.bind(',f', 'open -t {primary}')
 
 ## Bindings for caret mode
 # config.bind('$', 'move-to-end-of-line', mode='caret')
