@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# MIT License
+# 
+# Copyright (c) 2020 Marek Bogusovsky
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+#status=$(nordvpn status | awk '/Status:/ {print $2}')
+status=$(nordvpn status | grep -oP '(?<=(Status:)\s)\w+')
+
+function showIp {
+    IP=$(nordvpn status | awk '/Your new IP: / {print $4}')
+    notify-send -i /var/lib/nordvpn/icon.svg "Assigned IP: ${IP}"
+    echo -n ${IP} | xclip -selection clipboard &> /dev/null
+}
+
+function toggleState {
+    if [ "${status}" = "Disconnected" ]; then
+        notify-send -i /var/lib/nordvpn/icon.svg "Finding the fastest server..."
+        nordvpn connect > /dev/null
+    elif [ "${status}" = "Connected" ]; then
+        nordvpn disconnect > /dev/null
+    fi
+}
+
+case $BLOCK_BUTTON in
+    1) [[ "${status}" = "Connected" ]] && showIp ;;
+    2) toggleState ;;
+    3) notify-send -i /var/lib/nordvpn/icon.svg "NordVPN" "$(nordvpn status | sed '1 s|^.*Status:|Status:|g')" ;;
+    *) ;;
+esac
+
+source colors
+
+#ICON=""
+ICON=""
+if [ "${status}" = "Disconnected" ]; then
+  colorize "gray" "${ICON}"
+else
+  colorizeBegin "magenta" && echo -n "${ICON}" && colorizeEnd -n
+  server=$(nordvpn status | awk '/Current server: / { print $3 }' | cut -d \. -f 1)
+  echo " ${server}"
+fi
+
