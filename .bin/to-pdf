@@ -1,0 +1,13 @@
+#!/bin/bash
+
+[[ -z $1 || ! -f "$1" ]] && echo "Usage: ${0} <filename.md>" && exit 1
+
+output="${1%%.md}.pdf"
+pandoc -s -f gfm+hard_line_breaks "$1" -o "${output}" \
+    --pdf-engine=xelatex \
+    -V linkcolor:blue \
+    -V geometry:a4paper \
+    -V geometry:margin=2cm \
+    -V pagestyle=empty \
+    -V 'mainfont:AnonymousPro' \
+    -V 'mainfontoptions:Extension=.ttf, UprightFont=*-Regular, BoldFont=*-Bold, ItalicFont=*-Italic, BoldItalicFont=*-BoldItalic' \
