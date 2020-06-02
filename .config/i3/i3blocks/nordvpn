@@ -43,7 +43,7 @@ function toggleState {
 case $BLOCK_BUTTON in
     1) [[ "${status}" = "Connected" ]] && showIp ;;
     2) toggleState ;;
-    3) notify-send -i /var/lib/nordvpn/icon.svg "NordVPN" "$(nordvpn status | sed '1 s|^.*Status:|Status:|g')" ;;
+    3) notify-send -i /var/lib/nordvpn/icon.svg "NordVPN" "$(nordvpn status | sed -E '1s|^.*(A new version.*$)|<b>\r\1\r</b>|g; /Status:|Current /d')" ;;
     *) ;;
 esac
 
