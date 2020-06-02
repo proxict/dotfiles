@@ -29,7 +29,7 @@ esac
 source colors
 
 CPU_TEMP=$(cpu-core-temp)
-CPU_MAX=70
+CPU_MAX=${CPU_MAX:-100}
 
 LABELS=""
 

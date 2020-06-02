@@ -23,6 +23,7 @@ interval=once
 [separator]
 
 [cpu-temp]
+CPU_MAX=70
 interval=5
 [separator]
 
