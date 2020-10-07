@@ -23,6 +23,7 @@ c.auto_save.interval = 15000
 ## Always restore open sites when qutebrowser is reopened.
 ## Type: Bool
 c.auto_save.session = True
+c.session.lazy_restore = True
 
 ## The backend to use to display websites. qutebrowser supports two
 ## different web rendering engines / backends, QtWebKit and QtWebEngine.
@@ -652,7 +653,7 @@ c.content.headers.user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.
 ## can still be downloaded by clicking the download button in the pdf.js
 ## viewer.
 ## Type: Bool
-# c.content.pdfjs = False
+c.content.pdfjs = True
 
 ## Enables or disables plugins in Web pages.
 ## Type: Bool
