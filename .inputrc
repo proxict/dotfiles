@@ -1,5 +1,6 @@
 # Fixes del key bash and other programmes using readline
 set enable-keypad on
+set bell-style none
 
 "\e[1~": beginning-of-line
 "\e[4~": end-of-line
