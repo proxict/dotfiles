@@ -58,7 +58,7 @@ while read -r battery; do
         echo -n " + "
     fi
 
-    COLOR=$(interpolateColor "#00ff00" "#ff0000" "${QUALITY}")
+    COLOR=$(interpolateColor "#ff0000" "#00ff00" "${BATTERY_POWER}")
     echo -n "${LABEL} "
     colorizeBegin ${COLOR}
     echo -n "${BATTERY_POWER}%"
