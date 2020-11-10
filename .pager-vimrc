@@ -1,0 +1,134 @@
+scriptencoding utf-8
+let $VIMHOME= '/etc/nvim'
+
+set backupdir=~/.nvim/backup//
+set directory=~/.nvim/swap//
+
+let mapleader = ','
+" Keep backward f search, remapping it to <Leader>;
+nnoremap <Leader>; ,
+
+set wildignore+=*.o,*.a,*.d,*.so,*.swp,*.jpg,*.png,*.svg,*.ttf,*.pdf,*.zip,*.tar.gz,*.bin
+
+" Basics
+    filetype plugin on
+    syntax on
+    set nowrap
+    set background=dark
+    colorscheme monokai
+    set showmode
+
+    " Decrease message size - avoids the utterly annoying 
+    " "Press ENTER or type command to continue" message
+    set shortmess=a
+
+    " Expands tabs to spaces
+    set expandtab
+    " 4 spaces for the \t character
+    set tabstop=4
+    " 4 spaces for <Tab> key
+    set softtabstop=4
+    " 4 spaces for >> key
+    set shiftwidth=4
+    set shiftround
+
+    set number relativenumber
+
+    " When opening new file, don't close the current buffer, just hide it
+    set hidden
+
+    " Set the height of vim command line
+    set cmdheight=1
+
+    " Always report changed lines (e.g. "1 line yanked")
+    set report=0
+
+    " Always show statusline
+    set laststatus=2
+
+    " Don't show Vim help message on start
+    set shortmess=I
+
+    " Don't jump at the line start when moving around
+    set nostartofline
+
+    set splitright
+    set cursorline
+
+" Enable command completion
+    set wildmenu
+    "set wildmode=longest,list,full - "full" completes the whole word.
+    " I only want partial completion like in bash, for example.
+    set wildmode=longest,list
+
+" Disable auto-comment on new line
+    augroup autocomment
+        autocmd!
+        autocmd FileType * setlocal formatoptions-=cro
+    augroup END
+
+" Don't display @ when a line doesn't fit on screen
+    set display+=lastline
+
+" Keep cursor 5 lines above/below when scrolling
+    set scrolloff=5 " scroll lines above/below cursor
+    set sidescrolloff=5
+
+" Load other settings
+    source $VIMHOME/settings/clipboard.vim
+    source $VIMHOME/settings/smart_search.vim
+    source $VIMHOME/settings/auto_paste.vim
+    source $VIMHOME/settings/split_switch.vim
+
+    " Close all buffers
+    if !exists(':Q')
+        command Q qa
+    endif
+
+    " suda plugin
+    if !exists(':W')
+        command W w suda://%
+    endif
+
+    " Open the terminal with leader + Enter
+    nnoremap <leader><CR> :terminal<CR>
+
+    " Press ESC in terminal to exit the terminal mode
+    tnoremap <Esc> <C-\><C-n>
+
+    " Easier scrolling navigation and back/forward navigation
+    noremap <C-j> <C-e>
+    noremap <C-k> <C-y>
+    noremap <C-h> <C-o>
+    noremap <C-l> <C-i>
+ 
+" Syntax highlighting for PSQL
+syn region Heading start=/^ \l/ end=/[-+]\+$/
+syn match Border "|"
+syn match IntVal " \d\+\(\n\| \)"
+syn match NullVal " NULL\(\n\| \)"
+syn match NegVal " -\d\+\(\n\| \)"
+syn match FloatVal " \d\+\.\d\+\(\n\| \)"
+syn match NegFloatVal " -\d\+\.\d\+\(\\n\| \)"
+syn match DateTime "\d\{4}-\d\{2}-\d\{2} \d\{2}:\d\{2}:\d\{2}\(\.\d\{1,}\|\)"
+syn match TrueVal " t\(\n\| \)"
+syn match FalseVal " f\(\n\| \)"
+ 
+hi def Heading ctermfg=246
+hi def IntVal ctermfg=229
+hi def FalseVal ctermfg=88
+hi def NullVal ctermfg=242
+hi def Border ctermfg=240
+hi def NegFloatVal ctermfg=160
+hi def FloatVal ctermfg=230
+hi def NegVal ctermfg=160
+hi def DateTime ctermfg=111
+hi def TrueVal ctermfg=64
+
+let g:pathogen_blacklist = []
+" call add(g:pathogen_blacklist, 'directoryNameInBundleDir')
+execute pathogen#infect()
+Helptags
+
+set secure
+
