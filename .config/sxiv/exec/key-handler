@@ -1,0 +1,12 @@
+#!/usr/bin/sh
+
+while read file; do
+    case "$1" in
+    "w") feh --bg-scale "$file" ;;
+	"y") echo -n "$file" | clipboard ;;
+	"Y") readlink -f "$file" | tr -d '\n' | clipboard ;;
+    "i") notify-send -- "$(ls -l ${file})" ;;
+	"d") [ "$(printf "No\\nYes" | dmenu -i -p "Really delete $file?")" = "Yes" ] && rm -f "$file" && notify-send "$file deleted." ;;
+	"e") st nvim "${file%%.jpg}.txt" & ;;
+    esac
+done
