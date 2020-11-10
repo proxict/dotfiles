@@ -51,11 +51,11 @@ source colors
 
 #ICON=""
 ICON=""
-if [ "${status}" = "Disconnected" ]; then
-  colorize "gray" "${ICON}"
-else
+if [ "${status}" = "Connected" ]; then
   colorizeBegin "magenta" && echo -n "${ICON}" && colorizeEnd -n
   server=$(nordvpn status | awk '/Current server: / { print $3 }' | cut -d \. -f 1)
   echo " ${server}"
+else
+  colorize "gray" "${ICON}"
 fi
 
