@@ -22,6 +22,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+source colors
+
 INTERFACE="${BLOCK_INSTANCE:-wlan0}"
 
 function showAllIps {
@@ -58,4 +60,4 @@ echo ${QUALITY}% [${SSID}]
 echo ${QUALITY}% [${SSID}]
 
 # colorize output based on signal quality
-echo $(interpolateColor "#00ff00" "#ff0000" "${QUALITY}")
+echo $(interpolateColor "#ff0000" "#00ff00" "${QUALITY}")
