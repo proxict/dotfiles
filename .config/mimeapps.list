@@ -12,8 +12,10 @@ application/x-extension-xhtml=qutebrowser.desktop
 application/x-extension-xht=qutebrowser.desktop
 text/plain=nvim.desktop
 image/jpeg=feh.desktop
+x-scheme-handler/tg=userapp-Telegram Desktop-VWZ9W0.desktop
 
 [Added Associations]
 x-scheme-handler/http=qutebrowser.desktop;
 x-scheme-handler/https=qutebrowser.desktop;
 application/pdf=org.pwmt.zathura-pdf-mupdf.desktop;
+x-scheme-handler/tg=userapp-Telegram Desktop-VWZ9W0.desktop;
