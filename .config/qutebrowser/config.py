@@ -552,6 +552,8 @@ c.colors.tabs.pinned.selected.odd.fg = c.colors.tabs.pinned.selected.even.fg
 ## Type: String
 c.content.headers.user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
 
+c.content.blocking.method = 'adblock'
+
 ## Whether host blocking is enabled.
 ## Type: Bool
 # c.content.host_blocking.enabled = True
@@ -1294,7 +1296,7 @@ c.url.default_page = 'about:blank'
 ## used by prepending the search engine name to the search term, e.g.
 ## `:open google qutebrowser`.
 ## Type: Dict
-c.url.searchengines = {'DEFAULT': 'https://encrypted.google.com/search?q={}'}
+c.url.searchengines = {'DEFAULT': 'https://encrypted.google.com/search?q={}', 'ip': 'https://whatismyipaddress.com/ip/{}'}
 
 ## The page(s) to open at the start.
 ## Type: List of FuzzyUrl, or FuzzyUrl
