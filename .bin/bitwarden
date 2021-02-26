@@ -17,7 +17,7 @@ fi
 SESSION=$(keyctl pipe "$(keyctl request user "bw_session" 2> /dev/null)" 2> /dev/null)
 STATUS="$(bw status --session "${SESSION}" | jq -r '.status')"
 if [ "${STATUS}" = "locked" ]; then
-    keyctl purge user "bw_session"
+    keyctl purge user "bw_session" &> /dev/null
     PASSWORD="$(rofi -dmenu -p 'Master Password' -password -lines 0)"
     [ -z "${PASSWORD}" ] && exit 1
     SESSION="$(bw unlock "${PASSWORD}" --raw)"
