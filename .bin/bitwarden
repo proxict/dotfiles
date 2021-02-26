@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [ "${1}" = "status" ] || [ "${1}" == "login" ] || [ "${1}" = "lock" ] || [ "${1}" = "logout" ]; then
+    bw "$@"
+    exit $?
+fi
+
+if ! bw login --check &>/dev/null; then
+    EMAIL="$(rofi -dmenu -p 'Email' -lines 0)"
+    PASSWORD="$(rofi -dmenu -p 'Master Password' -password -lines 0)"
+    [ -z "${PASSWORD}" ] && exit 1
+    SESSION="$(bw login "${EMAIL}" "${PASSWORD}")"
+    [ -z "${SESSION}" ] && echo "Failed to unlock vault" && exit 1
+    keyctl add user "bw_session" "${SESSION}" "@u" &>/dev/null || exit 1
+fi
+
+SESSION=$(keyctl pipe "$(keyctl request user "bw_session" 2> /dev/null)" 2> /dev/null)
+STATUS="$(bw status --session "${SESSION}" | jq -r '.status')"
+if [ "${STATUS}" = "locked" ]; then
+    keyctl purge user "bw_session"
+    PASSWORD="$(rofi -dmenu -p 'Master Password' -password -lines 0)"
+    [ -z "${PASSWORD}" ] && exit 1
+    SESSION="$(bw unlock "${PASSWORD}" --raw)"
+    [ -z "${SESSION}" ] && echo "Failed to unlock vault" && exit 1
+    keyctl add user "bw_session" "${SESSION}" "@u" &> /dev/null || exit 1
+fi
+
+bw --session "${SESSION}" "$@"
