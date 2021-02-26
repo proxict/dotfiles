@@ -133,6 +133,7 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id volume-up && pkill -SIGRTMIN+3
 bindsym XF86AudioLowerVolume exec --no-startup-id volume-down && pkill -SIGRTMIN+3 i3blocks
 bindsym XF86AudioMute exec --no-startup-id volume-toggle && pkill -SIGRTMIN+3 i3blocks
 bindsym XF86AudioMicMute exec --no-startup-id microphone-toggle && pkill -SIGRTMIN+4 i3blocks
+bindsym XF86AudioPlay exec --no-startup-id playerctl --player=spotify play-pause
 
 # Toggle touchpad
 bindsym XF86TouchpadToggle exec --no-startup-id synclient TouchpadOff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')
