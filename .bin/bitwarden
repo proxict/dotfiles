@@ -1,9 +1,10 @@
 #!/bin/bash
 
-if [ "${1}" = "status" ] || [ "${1}" == "login" ] || [ "${1}" = "lock" ] || [ "${1}" = "logout" ]; then
-    bw "$@"
-    exit $?
-fi
+case "${1}" in
+    "status"|"login"|"lock"|"logout"|"--help"|"--version"|"-h"|"-v")
+        bw "$@"; exit $?
+        ;;
+esac
 
 if ! bw login --check &>/dev/null; then
     EMAIL="$(rofi -dmenu -p 'Email' -lines 0)"
@@ -25,4 +26,8 @@ if [ "${STATUS}" = "locked" ]; then
     keyctl add user "bw_session" "${SESSION}" "@u" &> /dev/null || exit 1
 fi
 
-bw --session "${SESSION}" "$@"
+if [ "${1}" = "ls" ]; then
+    bw --session "${SESSION}" list items --search "${2}" | jq -r '.[] | [.name, .login.username, .login.password] | @tsv' | column -t
+else
+    bw --session "${SESSION}" "$@"
+fi
