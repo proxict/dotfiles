@@ -152,6 +152,10 @@ bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && pkill -S
 # Duplicate screen
 bindsym XF86Display exec --no-startup-id switch-screen
 
+# Screenshot
+bindsym Print exec --no-startup-id scrot -e 'mkdir -p ~/screenshots && mv $f ~/screenshots'
+bindsym $mod+Print exec --no-startup-id sleep 0.2 && scrot -s -e 'mkdir -p ~/screenshots && mv $f ~/screenshots'
+
 #///////////////////////////////////////////////////////////////////////////////////////
 #/// Window colors
 #///////////////////////////////////////////////////////////////////////////////////////
