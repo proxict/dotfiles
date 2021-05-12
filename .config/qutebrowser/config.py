@@ -762,7 +762,7 @@ c.downloads.remove_finished = 2000
 ## The editor (and arguments) to use for the `open-editor` command. `{}`
 ## gets replaced by the filename of the file to be edited.
 ## Type: ShellCommand
-c.editor.command = ['st', '-e', 'nvim', '{}']
+c.editor.command = ["st", "-e", "nvim", "{file}", "-c", "normal {line}G{column0}l"]
 
 ## Encoding to use for the editor.
 ## Type: Encoding
