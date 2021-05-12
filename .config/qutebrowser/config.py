@@ -564,6 +564,19 @@ c.content.blocking.method = 'adblock'
 ## file, or a file named   `hosts` (with any extension).
 ## Type: List of Url
 # c.content.host_blocking.lists = ['https://www.malwaredomainlist.com/hostslist/hosts.txt', 'http://someonewhocares.org/hosts/hosts', 'http://winhelp2002.mvps.org/hosts.zip', 'http://malwaredomains.lehigh.edu/files/justdomains.zip', 'https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&mimetype=plaintext']
+c.content.blocking.adblock.lists = [
+        'https://easylist.to/easylist/easylist.txt',
+        'https://easylist.to/easylist/easyprivacy.txt',
+        'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters.txt',
+        'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters-2020.txt',
+        'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/legacy.txt',
+        'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/badware.txt',
+        'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/privacy.txt',
+        'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/resource-abuse.txt',
+        'https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=1&mimetype=plaintext&_=223428',
+        'https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists/brave-social.txt',
+        'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/unbreak.txt',
+        'https://raw.githubusercontent.com/brave/adblock-lists/master/brave-unbreak.txt']
 
 ## List of domains that should always be loaded, despite being ad-
 ## blocked. Domains may contain * and ? wildcards and are otherwise
