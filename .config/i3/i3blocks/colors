@@ -23,7 +23,7 @@
 # SOFTWARE.
 
 function toColor() {
-    [ ${1:0:1} == "#" ] && echo -n "${1}" && return 0
+    [ "${1:0:1}" == "#" ] && echo -n "${1}" && return 0
     case $1 in
         "gray") echo -n "#acacac" ;;
         "magenta") echo -n "#8D20AE" ;;
@@ -34,21 +34,21 @@ function toColor() {
 }
 
 function printColor() {
-    echo $(toColor $1) && echo $(toColor $1)
+    toColor "${1}" && echo && toColor "${1}" && echo
 }
 
 function colorize {
-  echo "<span foreground=\"$(toColor $1)\">${2}</span>"
+  echo "<span foreground=\"$(toColor "${1}")\">${2}</span>"
 }
 
 function colorizeBegin {
-  echo -n "<span foreground=\"$(toColor $1)\">"
+  echo -n "<span foreground=\"$(toColor "${1}")\">"
 }
 
 function colorizeEnd {
-  echo $@ "</span>"
+  echo "$@" "</span>"
 }
 
 function interpolateColor {
-    color-map "${1}" "${2}" "${3}"
+    color-map "$(toColor "${1}")" "$(toColor "${2}")" "${3}"
 }
