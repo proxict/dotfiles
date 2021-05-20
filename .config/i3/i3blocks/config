@@ -13,7 +13,7 @@ interval=persist
 
 [up-status]
 label= 
-interval=60
+interval=30
 [separator]
 
 [layout]
