@@ -1,64 +1,54 @@
 #!/bin/bash
 
+command -v bc &>/dev/null || { echo "Command 'bc' not found, please install it and try again" >&2 && exit 1; }
+ 
 trap ctrlC INT
 
-run=1
+RUN=1
 function ctrlC() {
-    run=0
+    RUN=0
 }
 
-START=$(date "+%s %N")
+START="$(date '+%s %N')"
 iteration=0
-while [[ ${run} == "1" ]]; do
-    $@
-    retval=$?
+while [ "${RUN}" -eq 1 ]; do
     iteration=$((iteration + 1))
-
-    if [ ${retval} != 0 ]; then
-        break;
-    fi
+    "$@" || break
 done
-END=$(date "+%s %N")
+END="$(date '+%s %N')"
 
-startSeconds=$(echo ${START} | cut -d ' ' -f1)
-endSeconds=$(echo ${END} | cut -d ' ' -f1)
-startNs=$(echo ${START} | cut -d ' ' -f2)
-endNs=$(echo ${END} | cut -d ' ' -f2)
-startMs=$(echo ${startNs} / 1000000 | bc -l)
-endMs=$(echo ${endNs} / 1000000 | bc -l)
+startSeconds="$(echo "${START}" | cut -d ' ' -f1)"
+endSeconds="$(echo "${END}" | cut -d ' ' -f1)"
+startNs="$(echo "${START}" | cut -d ' ' -f2)"
+endNs="$(echo "${END}" | cut -d ' ' -f2)"
+startMs="$(echo "${startNs} / 1000000" | bc -l)"
+endMs="$(echo "${endNs} / 1000000" | bc -l)"
 
-deltaS=$(echo ${endSeconds} - ${startSeconds} | bc -l)
-deltaMs=$(echo ${endMs} - ${startMs} | bc -l)
-deltaMsTotal=$(echo "${deltaS} * 1000 + ${deltaMs}" | bc -l)
+deltaS="$(echo "${endSeconds} - ${startSeconds}" | bc -l)"
+deltaMs="$(echo "${endMs} - ${startMs}" | bc -l)"
+deltaMsTotal="$(echo "${deltaS} * 1000 + ${deltaMs}" | bc -l)"
+delta="${deltaMsTotal}"
 
-# getting date usually takes about 3.## ms, we are getting date twice,
-# hence subtract 7 and some change from the result
-delta=$(echo ${deltaMsTotal} - 3.0 | bc -l)
-
-deltaSeconds=$(echo "${delta} / 1000" | bc -l)
-averageSpeed=$(echo "${iteration} / ${deltaSeconds}" | bc -l)
+deltaSeconds="$(echo "${delta} / 1000" | bc -l)"
+averageSpeed="$(echo "${iteration} / ${deltaSeconds}" | bc -l)"
 
 function printFloat() {
-    printf "%.3f" $1
+    printf "%.3f" "${1}"
 }
 
 echo -e "\n-------------------------------------"
-if [[ ${run} == "0" ]]; then
-    echo -e "User interrupted the process by Ctrl+C"
-else
-    echo "Failed after ${iteration} iterations."
-fi
+[ "${RUN}" -eq 0 ] && echo -e "User interrupted the process by Ctrl+C" || echo "Failed after ${iteration} iterations."
 
 echo -n "The job has ran for "
-# 10 Let's output the time in seconds if the overall time exceeds 10 seconds
+# Let's output the time in seconds if the overall time exceeds 10 seconds
 if (( $(echo "${delta} > 10000" | bc -l) )); then
-    printFloat ${deltaSeconds}
+    printFloat "${deltaSeconds}"
     echo "s"
 else
-    printFloat ${delta}
+    printFloat "${delta}"
     echo "ms"
 fi
 echo -n "Average speed: "
-printFloat ${averageSpeed}
+printFloat "${averageSpeed}"
 echo "/s"
 
