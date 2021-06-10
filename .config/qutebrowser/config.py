@@ -1309,7 +1309,11 @@ c.url.default_page = 'about:blank'
 ## used by prepending the search engine name to the search term, e.g.
 ## `:open google qutebrowser`.
 ## Type: Dict
-c.url.searchengines = {'DEFAULT': 'https://encrypted.google.com/search?q={}', 'ip': 'https://whatismyipaddress.com/ip/{}'}
+c.url.searchengines = {
+    'DEFAULT': 'https://encrypted.google.com/search?q={}',
+    'ip': 'https://whatismyipaddress.com/ip/{}',
+    'profile': 'https://steamcommunity.com/profiles/{}'
+}
 
 ## The page(s) to open at the start.
 ## Type: List of FuzzyUrl, or FuzzyUrl
