@@ -26,7 +26,7 @@
 status=$(nordvpn status | grep -oP '(?<=(Status:)\s)\w+')
 
 function showIp {
-    IP=$(nordvpn status | awk '/Your new IP: / {print $4}')
+    IP=$(nordvpn status | awk '/Server IP: / {print $3}')
     notify-send -i /var/lib/nordvpn/icon.svg "Assigned IP: ${IP}"
     echo -n ${IP} | xclip -selection clipboard &> /dev/null
 }
