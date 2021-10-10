@@ -28,6 +28,9 @@ fi
 
 if [ "${1}" = "ls" ]; then
     bw --session "${SESSION}" list items --search "${2}" | jq -r '.[] | [.name, .login.username, .login.password] | @tsv' | column -t
+elif [ "${1}" = "get" ]; then
+    USERNAME="$(bw --session "${SESSION}" get username "${2}")"
+    bw --session "${SESSION}" get password "${2}" | xclip -selection clipboard &> /dev/null && echo "Password copied to clipboard for ${USERNAME}"
 else
     bw --session "${SESSION}" "$@"
 fi
