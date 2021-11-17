@@ -552,7 +552,7 @@ c.colors.tabs.pinned.selected.odd.fg = c.colors.tabs.pinned.selected.even.fg
 ## Type: String
 c.content.headers.user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
 
-c.content.blocking.method = 'adblock'
+c.content.blocking.method = 'both'
 
 ## Whether host blocking is enabled.
 ## Type: Bool
@@ -576,7 +576,9 @@ c.content.blocking.adblock.lists = [
         'https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=1&mimetype=plaintext&_=223428',
         'https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists/brave-social.txt',
         'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/unbreak.txt',
-        'https://raw.githubusercontent.com/brave/adblock-lists/master/brave-unbreak.txt']
+        'https://raw.githubusercontent.com/brave/adblock-lists/master/brave-unbreak.txt',
+        'https://raw.githubusercontent.com/tomasko126/easylistczechandslovak/master/filters.txt',
+        'https://raw.githubusercontent.com/tomasko126/easylistczechandslovak/master/filters_ublock.txt']
 
 ## List of domains that should always be loaded, despite being ad-
 ## blocked. Domains may contain * and ? wildcards and are otherwise
@@ -1312,7 +1314,8 @@ c.url.default_page = 'about:blank'
 c.url.searchengines = {
     'DEFAULT': 'https://encrypted.google.com/search?q={}',
     'ip': 'https://whatismyipaddress.com/ip/{}',
-    'profile': 'https://steamcommunity.com/profiles/{}'
+    'profile': 'https://steamcommunity.com/profiles/{}',
+    'etym': 'https://www.etymonline.com/search?q={}'
 }
 
 ## The page(s) to open at the start.
