@@ -158,6 +158,13 @@ bindsym XF86Display exec --no-startup-id switch-screen
 bindsym Print exec --no-startup-id scrot -e 'mkdir -p ~/screenshots && mv $f ~/screenshots'
 bindsym $mod+Print exec --no-startup-id sleep 0.2 && scrot -s -e 'mkdir -p ~/screenshots && mv $f ~/screenshots'
 
+# Dunst
+bindsym Control+space exec --no-startup-id dunstctl close
+bindsym Control+Shift+space exec --no-startup-id dunstctl close-all
+bindsym Control+grave exec --no-startup-id dunstctl history-pop
+bindsym Control+Shift+period exec --no-startup-id dunstctl context
+
+
 #///////////////////////////////////////////////////////////////////////////////////////
 #/// Window colors
 #///////////////////////////////////////////////////////////////////////////////////////
