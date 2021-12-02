@@ -2,7 +2,7 @@
 
 [ $UID == 0 ] || (>&2 echo "You must run this script as root" && exit 1)
 
-DEV_PATH="/sys/devices/platform/nct6775.656/hwmon/hwmon2"
+DEV_PATH="$(echo /sys/devices/platform/nct6775.656/hwmon/hwmon[0-9])"
 
 # Check that the device specified exists
 [ ! -d ${DEV_PATH} ] && >&2 echo "Device nct6775.656 not found!" && exit 1
