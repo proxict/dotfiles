@@ -30,6 +30,6 @@ while read -r meta; do
     COLOR="gray"
     [ "${STATUS}" = "Playing" ] && COLOR="green"
 
-    line="$(colorizeBegin ${COLOR} && echo -n " " && colorizeEnd -n && echo "${SONG:0:120}")"
+    line="$(colorizeBegin ${COLOR} && echo -n " " && colorizeEnd -n && echo "${SONG:0:100}")"
     echo "${line}" | sed -e 's|&|&amp;|g'
 done
