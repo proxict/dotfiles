@@ -1,8 +1,15 @@
 #!/bin/bash
 
-CPU_TEMP=0
-while read -r temp; do
-    CPU_TEMP=$(( (CPU_TEMP + temp) / 2 ))
-done <<< "$(sensors | perl -n -e '/(Core[ ]|temp)\d+:\s+\+(\d+)/ && print $2."\n"')"
+[ "X$(command -v bc)" = "X" ] && echo "bc not installed" && exit
 
-echo ${CPU_TEMP}
+TEMPS=()
+while read -r temp; do
+    TEMPS+=("${temp}")
+done <<< "$(sensors | sed -n '/Package id/,/^$/p' | perl -n -e '/:\s+\+(\d+)/ && print $1."\n"')"
+
+TEMP_SUM=0
+for i in "${!TEMPS[@]}"; do
+    TEMP_SUM=$(( TEMP_SUM +  TEMPS[i] ))
+done
+
+echo "${TEMP_SUM} / ${#TEMPS[@]}" | bc
