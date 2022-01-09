@@ -12,8 +12,24 @@ interval=persist
 [separator]
 
 [up-status]
+instance=united-promod.com:28960
+hostname=United-Promod S&D 1
 label= 
-interval=30
+interval=20
+[separator]
+
+[up-status]
+instance=united-promod.com:28961
+hostname=United-Promod S&D 2
+label= 
+interval=20
+[separator]
+
+[up-status]
+instance=united-promod.com:28963
+hostname=United-Promod TDM
+label= 
+interval=20
 [separator]
 
 [layout]
@@ -29,9 +45,12 @@ CPU_MAX=70
 interval=5
 [separator]
 
+[governor]
+interval=10
+[separator]
+
 [mem-used]
 COLOR=#ACACAC
-colorize=false
 label= 
 [separator]
 
