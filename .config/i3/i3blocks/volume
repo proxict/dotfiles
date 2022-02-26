@@ -24,6 +24,7 @@
 
 case $BLOCK_BUTTON in
     1) volume-toggle ;;
+    3) volume-mixer ;;
     4) volume-up ;;
     5) volume-down ;;
     *) ;;
