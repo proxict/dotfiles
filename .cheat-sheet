@@ -6,7 +6,7 @@ timedatectl set-time "2019-12-31 18:17:16"
 
 # pacman
 pacman -Q     # list all installed packages
-pacman -Qq    # list all installed packages without version numbr (quiet)
+pacman -Qq    # list all installed packages without version number (quiet)
 pacman -Qe    # list all explicitly installed packages
 pacman -Qdt   # list all orphaned packages
 pacman -Qn    # list packages installed from main repository
