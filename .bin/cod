@@ -25,7 +25,7 @@ export DXVK_LOG_LEVEL=none
 LEGACY=""
 [ ${legacy} ] && LEGACY="+set legacymode 1"
 
-gamemoderun wine cmd /c start /exec 'Z:\home\'"${USER}"'\Games\call-of-duty-4-modern-warfare\drive_c\Program Files (x86)\Activision\Call of Duty 4 - Modern Warfare\iw3mp.exe' "${LEGACY}" "$@" &
+gamemoderun wine "/home/${USER}/Games/call-of-duty-4-modern-warfare/drive_c/Program Files (x86)/Activision/Call of Duty 4 - Modern Warfare/iw3mp.exe" "${LEGACY}" "$@" 2>/dev/null &
 
 [ ${nosteam} ] || [ ${legacy} ] && echo "Running without steam" && exit 0
 
