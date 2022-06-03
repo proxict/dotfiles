@@ -1313,6 +1313,7 @@ c.url.searchengines = {
     'DEFAULT': 'https://encrypted.google.com/search?q={}',
     'ip': 'https://whatismyipaddress.com/ip/{}',
     'profile': 'https://steamcommunity.com/profiles/{}',
+    'alias': 'https://united-promod.com/manage-users.php?playerid={}',
     'etym': 'https://www.etymonline.com/search?q={}'
 }
 
