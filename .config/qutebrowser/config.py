@@ -573,10 +573,12 @@ c.content.blocking.adblock.lists = [
         'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/badware.txt',
         'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/privacy.txt',
         'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/resource-abuse.txt',
-        'https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=1&mimetype=plaintext&_=223428',
         'https://raw.githubusercontent.com/brave/adblock-lists/master/brave-lists/brave-social.txt',
         'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/unbreak.txt',
-        'https://raw.githubusercontent.com/brave/adblock-lists/master/brave-unbreak.txt']
+        'https://raw.githubusercontent.com/brave/adblock-lists/master/brave-unbreak.txt',
+        'https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=1&mimetype=plaintext',
+        'https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblockplus&showintro=1&mimetype=plaintext',
+        'https://www.i-dont-care-about-cookies.eu/abp/']
 
 ## List of domains that should always be loaded, despite being ad-
 ## blocked. Domains may contain * and ? wildcards and are otherwise
