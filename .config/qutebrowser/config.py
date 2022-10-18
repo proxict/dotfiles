@@ -550,7 +550,7 @@ c.colors.tabs.pinned.selected.odd.fg = c.colors.tabs.pinned.selected.even.fg
 
 ## User agent to send. Unset to send the default.
 ## Type: String
-c.content.headers.user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
+c.content.headers.user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36'
 
 c.content.blocking.method = 'adblock'
 
