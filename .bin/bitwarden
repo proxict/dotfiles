@@ -31,6 +31,8 @@ if [ "${1}" = "ls" ]; then
 elif [ "${1}" = "get" ]; then
     USERNAME="$(bw --session "${SESSION}" get username "${2}")"
     bw --session "${SESSION}" get password "${2}" | xclip -selection clipboard &> /dev/null && echo "Password copied to clipboard for ${USERNAME}"
+elif [ "${1}" = "sync" ]; then
+    bw --session "${SESSION}" sync
 else
     bw --session "${SESSION}" "$@"
 fi
