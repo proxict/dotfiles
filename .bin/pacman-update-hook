@@ -1,0 +1,2 @@
+#!/bin/bash
+[ -n ${DISPLAY} ] && /usr/bin/pkill -SIGRTMIN+5 i3blocks || echo "No display found, skipping"
