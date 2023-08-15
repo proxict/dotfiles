@@ -26,9 +26,9 @@
 status=$(nordvpn status | grep -oP '(?<=(Status:)\s)\w+')
 
 function showIp {
-    IP=$(nordvpn status | awk '/Server IP: / {print $3}')
+    IP=$(nordvpn status | awk '/^IP: / {print $2}')
     notify-send -i /var/lib/nordvpn/icon.svg "Assigned IP: ${IP}"
-    echo -n ${IP} | xclip -selection clipboard &> /dev/null
+    echo -n "${IP}" | xclip -selection clipboard &> /dev/null
 }
 
 function toggleState {
@@ -53,7 +53,7 @@ source colors
 ICON=""
 if [ "${status}" = "Connected" ]; then
   colorizeBegin "magenta" && echo -n "${ICON}" && colorizeEnd -n
-  server=$(nordvpn status | awk '/Current server: / { print $3 }' | cut -d \. -f 1)
+  server=$(nordvpn status | awk '/^Hostname: / { print $2 }' | cut -d \. -f 1)
   echo " ${server}"
 else
   colorize "gray" "${ICON}"
