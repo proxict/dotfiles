@@ -3,7 +3,7 @@
 die() { echo "$*" >&2; exit 2; }  # complain to STDERR and exit with error
 needs_arg() { if [ -z "$OPTARG" ]; then die "No arg for --$OPT option"; fi; }
 
-while getopts ln-: OPT; do
+while getopts ls-: OPT; do
   # support long options: https://stackoverflow.com/a/28466267/519360
   if [ "$OPT" = "-" ]; then   # long option: reformulate OPT and OPTARG
     OPT="${OPTARG%%=*}"       # extract long option name
@@ -11,7 +11,7 @@ while getopts ln-: OPT; do
     OPTARG="${OPTARG#=}"      # if long option argument, remove assigning `=`
   fi
   case "$OPT" in
-    n | nosteam )  nosteam=true ;;
+    s | steam )    steam=true ;;
     l | legacy )   legacy=true ;;
     ??* )          die "Illegal option --$OPT" ;;  # bad long option
     ? )            exit 2 ;;  # bad short option (error reported via getopts)
@@ -21,12 +21,20 @@ shift $((OPTIND-1)) # remove parsed options and args from $@ list
 
 export WINEESYNC=1
 export WINEDEBUG=-all
+export STAGING_SHARED_MEMORY=1
+export STAGING_WRITECOPY=1
 export DXVK_LOG_LEVEL=none
+export DXVK_ASYNC=1
+#export DXVK_HUD=pipelines
 LEGACY=""
-[ ${legacy} ] && LEGACY="+set legacymode 1"
+[ "${legacy}" ] && LEGACY="+set legacymode 1"
 
-gamemoderun wine "/home/${USER}/Games/call-of-duty-4-modern-warfare/drive_c/Program Files (x86)/Activision/Call of Duty 4 - Modern Warfare/iw3mp.exe" "${LEGACY}" "$@" 2>/dev/null &
+#~/compiled/wine/build64/server/wineserver -k
+#~/compiled/wine/build64/server/wineserver
+~/compiled/wine/build32/wine "/home/${USER}/.wine/drive_c/Program Files (x86)/Activision/Call of Duty 4 - Modern Warfare/iw3mp.exe" "${LEGACY}" "$@" 2>/dev/null &
+#~/compiled/wine/build32/wine "/home/${USER}/.wine/drive_c/Program Files (x86)/Activision/Call of Duty 4 - Modern Warfare/cod4x_game.exe" "${LEGACY}" "$@" 2>/dev/null &
 
-[ ${nosteam} ] || [ ${legacy} ] && echo "Running without steam" && exit 0
+[ ! "${steam}" ] && exit 0
 
-{ pgrep steam.exe &>/dev/null && echo "Steam already running"; } || { echo "Launching steam" && wine "/home/${USER}/.wine/drive_c/Program Files (x86)/Steam/steam.exe" -silent &> /dev/null & }
+{ pgrep steam.exe &>/dev/null && echo "Steam already running"; } || { echo "Launching steam" && ~/compiled/wine/build32/wine "/home/${USER}/.wine/drive_c/Program Files (x86)/Steam/steam.exe" -silent &> /dev/null & }
+
