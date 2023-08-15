@@ -40,21 +40,19 @@ set recolor "true"
 
 set adjust-open width
 set pages-per-row 1
-#set smooth-scroll true
 set selection-clipboard clipboard
 set incremental-search true
-set guioptions ""
+set guioptions "scv"
 
 set window-title-home-tilde true
 set window-title-basename true
 set statusbar-home-tilde true
-set show-hidden true
+set show-hidden false
 
 map d scroll half-down
 map u scroll half-up
 map x toggle_page_mode
 map <C-r> rotate
 map r recolor
-map <S-Up> zoom in
-map <S-Down> zoom out
-
+map <C-k> zoom in
+map <C-j> zoom out
