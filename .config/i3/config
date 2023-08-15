@@ -15,6 +15,7 @@ workspace 1 gaps outer 0
 for_window [class="qutebrowser"] border pixel 0
 for_window [title="calendar.vim-33b067d9-70a0-40df-9a11-dbe3e0b55ec6"] floating enable, resize set 800 600, move absolute position center
 for_window [title="volume-mixer-da559d24-3c83-4b1e-b8e1-f152d4a66b79"] floating enable, resize set 800 600, move absolute position center
+for_window [title="Friends List" class="Steam"] floating enable
 
 bindsym $mod+i gaps inner current plus 5
 bindsym $mod+o gaps outer current plus 5
