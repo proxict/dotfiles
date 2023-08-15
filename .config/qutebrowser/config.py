@@ -670,7 +670,7 @@ c.content.blocking.adblock.lists = [
 ## can still be downloaded by clicking the download button in the pdf.js
 ## viewer.
 ## Type: Bool
-c.content.pdfjs = True
+c.content.pdfjs = False
 
 ## Enables or disables plugins in Web pages.
 ## Type: Bool
