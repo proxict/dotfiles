@@ -8,6 +8,7 @@ markup=pango
 interval=5
 
 [spotify]
+color=#ACACAC
 interval=persist
 [separator]
 
@@ -34,7 +35,7 @@ interval=20
 
 [layout]
 color=#FABD2F
-label=
+label= 
 command=setxkbmap -print | grep xkb_symbols | awk '{print $4}' | awk -F"+" '{print $2}'
 signal=1
 interval=once
@@ -51,26 +52,26 @@ interval=10
 
 [mem-used]
 COLOR=#ACACAC
-label= 
+label=󰘚 
 [separator]
 
 [disk]
 instance=/
 color=#ACACAC
-label=
+label= 
 [separator]
 
 [pacman-updates]
 color=#ACACAC
 signal=5
 interval=3600
-label=󰏗
+label= 
 [separator]
 
 [ethernet]
 interval=3
 instance=enp0s31f6
-label=
+label=󰈀
 [separator]
 
 [nordvpn]

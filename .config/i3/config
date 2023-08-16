@@ -196,7 +196,7 @@ exec --no-startup-id udiskie
 #/// Status bar
 #///////////////////////////////////////////////////////////////////////////////////////
 bar {
-    font pango:DejaVu Sans Mono:style=Oblique 11
+    font pango:DejaVuSansM Nerd Font:style=Oblique 12
 
     colors {
         statusline  #888888
