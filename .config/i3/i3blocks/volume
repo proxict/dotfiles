@@ -34,11 +34,11 @@ source colors
 
 volumeLevel=$(get-volume)
 if [ "${volumeLevel}" -ge 66 ]; then
-  echo -n " "
+  echo -n "  "
 elif [ "${volumeLevel}" -ge 33 ]; then
-  echo -n " "
+  echo -n "  "
 else
-  echo -n " "
+  echo -n "  "
 fi
 
 muted=$(get-volume-muted)

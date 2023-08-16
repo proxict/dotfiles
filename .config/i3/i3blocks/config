@@ -35,7 +35,7 @@ interval=20
 
 [layout]
 color=#FABD2F
-label= 
+label=  
 command=setxkbmap -print | grep xkb_symbols | awk '{print $4}' | awk -F"+" '{print $2}'
 signal=1
 interval=once
@@ -93,5 +93,5 @@ interval=once
 
 [date-time]
 color=#ACACAC
-label= 
+label=  
 interval=1
