@@ -65,7 +65,7 @@ label=
 color=#ACACAC
 signal=5
 interval=3600
-label= 
+label=  
 [separator]
 
 [ethernet]
