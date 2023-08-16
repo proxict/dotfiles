@@ -52,10 +52,10 @@ source colors
 ICON="󰖂"
 #ICON="󱀣"
 if [ "${status}" = "Connected" ]; then
-  colorizeBegin "magenta" && echo -n "${ICON}" && colorizeEnd -n
+  colorizeBegin "magenta" && echo -n "󰕥" && colorizeEnd -n
   server=$(nordvpn status | awk '/^Hostname: / { print $2 }' | cut -d \. -f 1)
   echo " ${server}"
 else
-  colorize "gray" "${ICON}"
+  colorize "gray" "󰦞"
 fi
 
