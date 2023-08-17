@@ -1,0 +1,4 @@
+. "${HOME}/.bin/complete_alias"
+. /usr/share/bash-completion/completions/zathura
+complete -F _zathura pdf
+complete -F _complete_alias dotfiles
