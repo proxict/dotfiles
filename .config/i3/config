@@ -206,7 +206,7 @@ bar {
 #       class              border backgrd text
         focused_workspace  #191919 #191919 #FABD2F
         active_workspace   #191919 #191919 #6b6b6b
-        inactive_workspace #191919 #191919 #423e32
+        inactive_workspace #191919 #191919 #ACACAC
         urgent_workspace   #191919 #191919 #EBDBB2
     }
 
