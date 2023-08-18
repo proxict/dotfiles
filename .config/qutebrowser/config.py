@@ -25,6 +25,8 @@ c.auto_save.interval = 15000
 c.auto_save.session = True
 c.session.lazy_restore = True
 
+c.statusbar.widgets = ["keypress", "search_match", "url", "scroll", "history", "tabs", "progress", "search_match"]
+
 ## The backend to use to display websites. qutebrowser supports two
 ## different web rendering engines / backends, QtWebKit and QtWebEngine.
 ## QtWebKit was discontinued by the Qt project with Qt 5.6, but picked up
