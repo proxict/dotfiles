@@ -525,7 +525,7 @@ c.colors.tabs.pinned.selected.odd.fg = c.colors.tabs.pinned.selected.even.fg
 ##   - true
 ##   - false
 ##   - ask
-# c.content.geolocation = 'ask'
+c.content.geolocation = False
 
 ## Value to send in the `Accept-Language` header.
 ## Type: String
