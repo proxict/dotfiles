@@ -1,4 +1,0 @@
-#!/bin/bash
-
-sed ~/.config-files-list -e "s|~|/home/${USER}|g" | dmenu -z -l 10
-
