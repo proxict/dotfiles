@@ -8,7 +8,7 @@ esac
 
 if ! bw login --check &>/dev/null; then
     EMAIL="$(rofi -dmenu -p 'Email' -l 0)"
-    PASSWORD="$(rofi -dmenu -p 'Master Password' -password -l 0)"
+    PASSWORD="$(rofi -dmenu -disable-history -p 'Master Password' -password -l 0)"
     [ -z "${PASSWORD}" ] && exit 1
     SESSION="$(bw login "${EMAIL}" "${PASSWORD}")"
     [ -z "${SESSION}" ] && echo "Failed to unlock vault" && exit 1
