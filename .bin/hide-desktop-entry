@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -o pipefail
+set -o errexit
+
+[ -z "${1}" ] && echo "Usage: $(basename "${BASH_SOURCE[1]}") <entry name|filename>" >&2 && exit 1
+
+NAME="${*}"
+
+if [ -f "${NAME}" ]; then
+    FILENAME="${NAME}"
+else
+    FILENAME="$(grep -r "Name=${NAME}" | cut -d ':' -f1 | sort -u)" || { echo "No desktop entry matching name ${NAME}" 1>&2 && exit 1; }
+    MATCHING_FILENAMES_COUNT="$(wc -l <<< "${FILENAME}")"
+    [ "${MATCHING_FILENAMES_COUNT}" -gt 1 ] && echo -e "Multiple desktop enteries matching \"${NAME}\":\n${FILENAME}" >&2 && exit 1
+fi
+
+TARGET_ENTRY_PATH="${HOME}/.local/share/applications/${FILENAME}"
+
+cp "${FILENAME}" "${TARGET_ENTRY_PATH}"
+echo "Hidden=true" >> "${TARGET_ENTRY_PATH}"
+echo "NoDisplay=true" >> "${TARGET_ENTRY_PATH}"
