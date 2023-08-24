@@ -1,0 +1,213 @@
+#!/usr/bin/env python3
+
+# Copyright 2017 Chris Braun (cryzed) <cryzed@googlemail.com>
+# Adapted for rbw by Marek Bogusovsky (proxict) <marek.bogusovsky@protonmail.com>
+#
+# This file is part of qutebrowser.
+#
+# qutebrowser is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published bjy
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# qutebrowser is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with qutebrowser.  If not, see <https://www.gnu.org/licenses/>.
+
+from __future__ import annotations
+from dataclasses import dataclass
+
+import argparse
+import enum
+import os
+import shlex
+import subprocess
+import sys
+import json
+import tldextract
+
+argument_parser = argparse.ArgumentParser(
+    description=__doc__,
+)
+argument_parser.add_argument("url", nargs="?", default=os.getenv("QUTE_URL"))
+argument_parser.add_argument("--folder", "-f", default=None, help="Specify folder to search for the credentials")
+argument_parser.add_argument(
+    "--dmenu-invocation",
+    "-d",
+    default="rofi -dmenu -i -p Bitwarden",
+    help="Invocation used to execute a dmenu-provider",
+)
+argument_parser.add_argument(
+    "--no-insert-mode",
+    "-n",
+    dest="insert_mode",
+    action="store_false",
+    help="Don't automatically enter insert mode",
+)
+argument_parser.add_argument(
+    "--io-encoding",
+    "-i",
+    default="UTF-8",
+    help="Encoding used to communicate with subprocesses",
+)
+group = argument_parser.add_mutually_exclusive_group()
+group.add_argument("--username-only", "-e", action="store_true", help="Only insert username")
+group.add_argument("--password-only", "-w", action="store_true", help="Only insert password")
+
+
+class ExitCodes(enum.IntEnum):
+    SUCCESS = 0
+    FAILURE = 1
+
+
+class QuteFifo:
+    def __init__(self) -> None:
+        self.fifo = open(os.environ["QUTE_FIFO"], "w")
+
+    def command(self, command: str) -> None:
+        self.fifo.write(command + "\n")
+        self.fifo.flush()
+
+    def fake_key(self, text: str) -> None:
+        for c in text:
+            # Escape all characters by default, space requires special handling
+            sequence = '" "' if c == " " else f"\\{c}"
+            self.command(f"fake-key {sequence}")
+
+    def message_error(self, text: str) -> None:
+        self.command(f"message-error '{text}'")
+
+    def message_info(self, text: str) -> None:
+        self.command(f"message-info '{text}'")
+
+    def message_warning(self, text: str) -> None:
+        self.command(f"message-warning '{text}'")
+
+
+def get_credentials(
+    domain: str, encoding: str, folder: str | None = None, username: str | None = None
+) -> list[str] | tuple[str, str]:
+    args = ["rbw", "get", "--raw", domain]
+    if folder:
+        args.extend(["--folder", folder])
+    if username:
+        args.append(username)
+    process = subprocess.run(
+        args,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+
+    err = process.stderr.decode(encoding).strip()
+    if err:
+        if err.endswith("no entry found"):
+            return []
+        elif ": multiple entries found: " in err:
+            usernames = err.split(": multiple entries found: ")[1].split(", ")
+            return [u.rpartition("@")[0] for u in usernames]
+        else:
+            raise Exception(f"rbw failed: {err}")
+
+    credentials_data = json.loads(process.stdout.decode(encoding).strip())["data"]
+    return credentials_data["username"], credentials_data["password"]
+
+
+def dmenu(items: list[str], invocation: str, encoding: str) -> str:
+    process = subprocess.run(
+        shlex.split(invocation),
+        input="\n".join(items).encode(encoding),
+        stdout=subprocess.PIPE,
+    )
+    return process.stdout.decode(encoding).strip()
+
+
+@dataclass
+class Error:
+    error: str
+
+
+@dataclass
+class Info:
+    info: str
+
+@dataclass
+class Credentials:
+    credentials: tuple[str, str] | Error | Info
+
+
+def get_credentials_for_url(url: str, username: str | None = None) -> Credentials:
+    extract_result = tldextract.extract(arguments.url)
+    scheme = "http"
+    if arguments.url.startswith("https"):
+        scheme = "https"
+    scheme += "://"
+    fqdn = extract_result.fqdn
+    registered_domain = extract_result.registered_domain
+    domain = extract_result.domain
+    if fqdn:
+        fqdn = scheme + fqdn
+    if registered_domain:
+        registered_domain = scheme + registered_domain
+    if domain:
+        domain = scheme + domain
+
+    for target in filter(None, [fqdn, registered_domain, domain, extract_result.ipv4]):
+        try:
+            credentials = get_credentials(target, arguments.io_encoding, arguments.folder, username)
+        except Exception as e:
+            return Credentials(Error(str(e)))
+
+        if isinstance(credentials, tuple):  # We found exactly one match, return it immediately
+            return Credentials(credentials)
+        elif isinstance(credentials, list):  # We either found multiple or no credentials
+            if not credentials:  # If no credentials were found for this target, continue searching in other targets
+                continue
+            # For multiple matches, let the user decide which one to fill, if any
+            choice = dmenu(credentials, arguments.dmenu_invocation, arguments.io_encoding)
+            if not choice:
+                return Credentials(Info(f'Canceled by user'))
+            return get_credentials_for_url(url, choice)
+
+    return Credentials(Info(f'No credentials found for "{registered_domain}"'))
+
+
+def main(arguments: argparse.Namespace) -> int:
+    if not arguments.url:
+        argument_parser.print_help()
+        return ExitCodes.FAILURE
+
+    fifo = QuteFifo()
+
+    credentials = get_credentials_for_url(arguments.url).credentials
+    if isinstance(credentials, Error):
+        fifo.message_error(credentials.error)
+        return ExitCodes.FAILURE
+
+    if isinstance(credentials, Info):
+        fifo.message_info(credentials.info)
+        return ExitCodes.SUCCESS
+
+    username, password = credentials
+
+    if arguments.username_only:
+        fifo.fake_key(username)
+    elif arguments.password_only:
+        fifo.fake_key(password)
+    else:
+        fifo.fake_key(username)
+        fifo.command("fake-key <Tab>")
+        fifo.fake_key(password)
+
+    if arguments.insert_mode:
+        fifo.command("mode-enter insert")
+
+    return ExitCodes.SUCCESS
+
+
+if __name__ == "__main__":
+    arguments = argument_parser.parse_args()
+    sys.exit(main(arguments))
