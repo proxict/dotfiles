@@ -34,7 +34,9 @@ argument_parser = argparse.ArgumentParser(
     description=__doc__,
 )
 argument_parser.add_argument("url", nargs="?", default=os.getenv("QUTE_URL"))
-argument_parser.add_argument("--folder", "-f", default=None, help="Specify folder to search for the credentials")
+argument_parser.add_argument(
+    "--folder", "-f", default=None, help="Specify folder to search for the credentials"
+)
 argument_parser.add_argument(
     "--dmenu-invocation",
     "-d",
@@ -60,37 +62,59 @@ group.add_argument("--password-only", "-w", action="store_true", help="Only inse
 
 
 class ExitCodes(enum.IntEnum):
+    """Represents process exit codes"""
+
     SUCCESS = 0
     FAILURE = 1
 
 
 class QuteFifo:
-    def __init__(self) -> None:
-        self.fifo = open(os.environ["QUTE_FIFO"], "w")
+    """Pipe for writing commands to qutebrowser"""
+
+    def __init__(self, encoding) -> None:
+        self.fifo = open(os.environ["QUTE_FIFO"], "w", encoding=encoding)
 
     def command(self, command: str) -> None:
+        """Executes the given command in qutebrowser"""
         self.fifo.write(command + "\n")
         self.fifo.flush()
 
     def fake_key(self, text: str) -> None:
+        """Fakes a key-press in qutebrowser"""
         for c in text:
             # Escape all characters by default, space requires special handling
             sequence = '" "' if c == " " else f"\\{c}"
             self.command(f"fake-key {sequence}")
 
     def message_error(self, text: str) -> None:
+        """Shows an error-message in qutebrowser"""
         self.command(f"message-error '{text}'")
 
     def message_info(self, text: str) -> None:
+        """Shows an info-message in qutebrowser"""
         self.command(f"message-info '{text}'")
 
     def message_warning(self, text: str) -> None:
+        """Shows a warning-message in qutebrowser"""
         self.command(f"message-warning '{text}'")
 
 
 def get_credentials(
     domain: str, encoding: str, folder: str | None = None, username: str | None = None
 ) -> list[str] | tuple[str, str]:
+    """
+    Gets login credentials for the given domain
+
+            Parameters:
+                    domain: The domain to get the credentials for
+                    encoding: Encoding of the stdout/stderr returned by rbw
+                    folder: Limits the credential search scope for the specified folder
+                    username: Limits the credential search scope for the specified user
+
+            Returns:
+                    A tuple containing username and password, or a list of possible usernames for
+                    whom there were credentials found for the given domain.
+    """
     args = ["rbw", "get", "--raw", domain]
     if folder:
         args.extend(["--folder", folder])
@@ -98,6 +122,7 @@ def get_credentials(
         args.append(username)
     process = subprocess.run(
         args,
+        check=False,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
@@ -106,20 +131,22 @@ def get_credentials(
     if err:
         if err.endswith("no entry found"):
             return []
-        elif ": multiple entries found: " in err:
+        if ": multiple entries found: " in err:
             usernames = err.split(": multiple entries found: ")[1].split(", ")
             return [u.rpartition("@")[0] for u in usernames]
-        else:
-            raise Exception(f"rbw failed: {err}")
+
+        raise Exception(f"rbw failed: {err}")
 
     credentials_data = json.loads(process.stdout.decode(encoding).strip())["data"]
     return credentials_data["username"], credentials_data["password"]
 
 
 def dmenu(items: list[str], invocation: str, encoding: str) -> str:
+    """Runs dmenu with given arguments."""
     process = subprocess.run(
         shlex.split(invocation),
         input="\n".join(items).encode(encoding),
+        check=False,
         stdout=subprocess.PIPE,
     )
     return process.stdout.decode(encoding).strip()
@@ -127,19 +154,36 @@ def dmenu(items: list[str], invocation: str, encoding: str) -> str:
 
 @dataclass
 class Error:
+    """Represents an error string"""
+
     error: str
 
 
 @dataclass
 class Info:
+    """Represents information string"""
+
     info: str
+
 
 @dataclass
 class Credentials:
+    """Represents credentials"""
+
     credentials: tuple[str, str] | Error | Info
 
 
 def get_credentials_for_url(url: str, username: str | None = None) -> Credentials:
+    """
+    Gets login credentials for the given URL
+
+            Parameters:
+                    url: The url to get the credentials for
+                    username: Limits the credential search scope for the specified user
+
+            Returns:
+                    Credentials, error or information string
+    """
     extract_result = tldextract.extract(arguments.url)
     scheme = "http"
     if arguments.url.startswith("https"):
@@ -163,13 +207,14 @@ def get_credentials_for_url(url: str, username: str | None = None) -> Credential
 
         if isinstance(credentials, tuple):  # We found exactly one match, return it immediately
             return Credentials(credentials)
-        elif isinstance(credentials, list):  # We either found multiple or no credentials
-            if not credentials:  # If no credentials were found for this target, continue searching in other targets
+        if isinstance(credentials, list):  # We either found multiple or no credentials
+            # If no credentials were found for this target, continue searching in other targets
+            if not credentials:
                 continue
             # For multiple matches, let the user decide which one to fill, if any
             choice = dmenu(credentials, arguments.dmenu_invocation, arguments.io_encoding)
             if not choice:
-                return Credentials(Info(f'Canceled by user'))
+                return Credentials(Info(f"Canceled by user"))
             return get_credentials_for_url(url, choice)
 
     return Credentials(Info(f'No credentials found for "{registered_domain}"'))
@@ -180,7 +225,7 @@ def main(arguments: argparse.Namespace) -> int:
         argument_parser.print_help()
         return ExitCodes.FAILURE
 
-    fifo = QuteFifo()
+    fifo = QuteFifo(arguments.io_encoding)
 
     credentials = get_credentials_for_url(arguments.url).credentials
     if isinstance(credentials, Error):
