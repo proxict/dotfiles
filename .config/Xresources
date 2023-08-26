@@ -3,10 +3,10 @@ st.alpha: 0.95
 *fading: 35
 *fadeColor: #4C566A
 
-*.foreground: #202020
-*.background: #E1D8B3
+*.foreground: #E1D8B3
+*.background: #202020
 *.color0: #242933
-*.color1: #BF616A
+*.color1: #BF6161
 *.color2: #A3BE8C
 *.color3: #EBCB8B
 *.color4: #5E81AC
@@ -14,7 +14,7 @@ st.alpha: 0.95
 *.color6: #8FBCBB
 *.color7: #BBC3D4
 *.color8: #2E3440
-*.color9: #C5727A
+*.color9: #C57272
 *.color10: #B1C89D
 *.color11: #EFD49F
 *.color12: #81A1C1
