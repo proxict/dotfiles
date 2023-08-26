@@ -17,10 +17,12 @@ for_window [title="calendar.vim-33b067d9-70a0-40df-9a11-dbe3e0b55ec6"] floating 
 for_window [title="volume-mixer-da559d24-3c83-4b1e-b8e1-f152d4a66b79"] floating enable, resize set 800 600, move absolute position center
 for_window [title="Friends List" class="Steam"] floating enable
 
-assign [class="Spotify"] "  "
-assign [class="TeamSpeak 3"] " 󰗋 "
+assign [class="Spotify"] ""
+assign [class="TeamSpeak 3"] "󰗋"
 
-bindsym $mod+t workspace " 󰗋 "
+exec --no-startup-id i3-msg workspace 1
+
+bindsym $mod+t workspace "󰗋"
 
 bindsym $mod+i gaps inner current plus 5
 bindsym $mod+o gaps outer current plus 5
