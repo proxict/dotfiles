@@ -1,0 +1,21 @@
+#!/bin/bash
+
+META_FILENAME="${HOME}/.cache/i3-meta-workspace"
+
+function toggle_meta() {
+    #  
+    { [ -f "${META_FILENAME}" ] && rm "${META_FILENAME}"; } || echo " " > "${META_FILENAME}"
+}
+
+function switch_to_workspace() {
+    i3-msg "workspace $(cat "${META_FILENAME}" || true)${1}"
+}
+
+function move_to_workspace() {
+    i3-msg "move container to workspace $(cat "${META_FILENAME}" || true)${1}"
+}
+
+[ "$1" = "--toggle" ] && toggle_meta
+[[ "$1" = "--switch-to" && -n "$2" ]] && switch_to_workspace "$2"
+[[ "$1" = "--move-to" && -n "$2" ]] && move_to_workspace "$2"
+
