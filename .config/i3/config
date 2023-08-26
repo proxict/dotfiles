@@ -72,7 +72,6 @@ bindsym $mod+Shift+Right move right
 bindsym $mod+s split toggle
 bindsym $mod+f fullscreen toggle
 #bindsym $mod+e layout toggle split
-bindsym $mod+w exec --no-startup-id dmenu-pass
 bindsym $mod+Shift+space floating toggle
 
 # switch to workspace
