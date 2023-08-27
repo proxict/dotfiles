@@ -26,7 +26,7 @@ SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source "${SELF_DIR}/colors"
 
 MEM_USED="$(free -h | awk '/^Mem:/ {print $3 "/" $2}')"
-PERCENT_USED="$(echo "${MEM_USED}" | awk -F '/' '{gsub(/Gi$/, "", $1); gsub(/Gi$/, "", $2); printf "%.1f", ($1/$2 * 100) }')"
+PERCENT_USED="$(free -m | awk '/^Mem:/ {printf "%.3f", ($3/$2 * 100) }')"
 
 COLOR="$(interpolateColor "green" "l-red" "${PERCENT_USED}")"
 colorize "${COLOR}" "${MEM_USED}"
