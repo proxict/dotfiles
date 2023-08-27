@@ -23,6 +23,10 @@ assign [class="TeamSpeak 3"] "󰗋"
 exec --no-startup-id i3-msg workspace 1
 
 bindsym $mod+t workspace "󰗋"
+bindsym $mod+Shift+t move container to workspace "󰗋"
+
+bindsym $mod+u workspace "󱞼"
+bindsym $mod+Shift+u move container to workspace "󱞼"
 
 bindsym $mod+i gaps inner current plus 5
 bindsym $mod+o gaps outer current plus 5
@@ -75,28 +79,31 @@ bindsym $mod+f fullscreen toggle
 bindsym $mod+Shift+space floating toggle
 
 # switch to workspace
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
-bindsym $mod+4 workspace 4
-bindsym $mod+5 workspace 5
-bindsym $mod+6 workspace 6
-bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
-bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
+bindsym $mod+1 exec "meta-workspace --switch-to 1"
+bindsym $mod+2 exec "meta-workspace --switch-to 2"
+bindsym $mod+3 exec "meta-workspace --switch-to 3"
+bindsym $mod+4 exec "meta-workspace --switch-to 4"
+bindsym $mod+5 exec "meta-workspace --switch-to 5"
+bindsym $mod+6 exec "meta-workspace --switch-to 6"
+bindsym $mod+7 exec "meta-workspace --switch-to 7"
+bindsym $mod+8 exec "meta-workspace --switch-to 8"
+bindsym $mod+9 exec "meta-workspace --switch-to 9"
+bindsym $mod+0 exec "meta-workspace --switch-to 10"
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+2 move container to workspace 2
-bindsym $mod+Shift+3 move container to workspace 3
-bindsym $mod+Shift+4 move container to workspace 4
-bindsym $mod+Shift+5 move container to workspace 5
-bindsym $mod+Shift+6 move container to workspace 6
-bindsym $mod+Shift+7 move container to workspace 7
-bindsym $mod+Shift+8 move container to workspace 8
-bindsym $mod+Shift+9 move container to workspace 9
-bindsym $mod+Shift+0 move container to workspace 10
+bindsym $mod+Shift+1 exec "meta-workspace --move-to 1"
+bindsym $mod+Shift+2 exec "meta-workspace --move-to 2"
+bindsym $mod+Shift+3 exec "meta-workspace --move-to 3"
+bindsym $mod+Shift+4 exec "meta-workspace --move-to 4"
+bindsym $mod+Shift+5 exec "meta-workspace --move-to 5"
+bindsym $mod+Shift+6 exec "meta-workspace --move-to 6"
+bindsym $mod+Shift+7 exec "meta-workspace --move-to 7"
+bindsym $mod+Shift+8 exec "meta-workspace --move-to 8"
+bindsym $mod+Shift+9 exec "meta-workspace --move-to 9"
+bindsym $mod+Shift+0 exec "meta-workspace --move-to 10"
+
+# Toggle meta-workspace
+bindsym $mod+x exec "meta-workspace --toggle"
 
 bindsym Mod1+Tab workspace next
 bindsym Mod1+Shift+Tab workspace prev
@@ -105,7 +112,7 @@ bindsym Mod1+Shift+Tab workspace prev
 bindsym $mod+Shift+c reload
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+bindsym $mod+Shift+r restart && polybar-msg cmd restart
 
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
@@ -136,10 +143,10 @@ bindsym $mod+r mode "resize"
 # bindsym XF86Sleep exec --no-startup-id padlock $(blur $(screenshot)) && setxkbmap us && pkill -SIGRTMIN+1 i3blocks && systemctl suspend
 
 # Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id volume-up && pkill -SIGRTMIN+3 i3blocks
-bindsym XF86AudioLowerVolume exec --no-startup-id volume-down && pkill -SIGRTMIN+3 i3blocks
-bindsym XF86AudioMute exec --no-startup-id volume-toggle && pkill -SIGRTMIN+3 i3blocks
-bindsym XF86AudioMicMute exec --no-startup-id microphone-toggle && pkill -SIGRTMIN+4 i3blocks
+bindsym XF86AudioRaiseVolume exec --no-startup-id volume-up && polybar-msg action "#volume.hook.0"
+bindsym XF86AudioLowerVolume exec --no-startup-id volume-down && polybar-msg action "#volume.hook.0"
+bindsym XF86AudioMute exec --no-startup-id volume-toggle && polybar-msg action "#volume.hook.0"
+bindsym XF86AudioMicMute exec --no-startup-id microphone-toggle && polybar-msg action "#microphone.hook.0"
 bindsym XF86AudioPlay exec --no-startup-id playerctl --player=spotify play-pause
 bindsym XF86AudioNext exec --no-startup-id playerctl next
 bindsym XF86AudioPrev exec --no-startup-id playerctl previous
@@ -148,7 +155,7 @@ bindsym XF86AudioPrev exec --no-startup-id playerctl previous
 bindsym XF86TouchpadToggle exec --no-startup-id synclient TouchpadOff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')
 
 # Toggle keyboard layout
-bindsym $mod+space exec --no-startup-id ~/.bin/toggle-kb-layout && pkill -SIGRTMIN+1 i3blocks
+bindsym $mod+space exec --no-startup-id ~/.bin/toggle-kb-layout
 
 # Keyboard backlight control
 bindsym XF86KbdBrightnessUp exec --no-startup-id ~/.bin/kb-brightness +1 && pkill -SIGRTMIN+4 i3blocks
@@ -178,8 +185,8 @@ bindsym Control+Shift+period exec --no-startup-id dunstctl context
 
 # class                 header  header  header  indicator window
 #                       border  backgr. text    color     border
-client.focused          #FF0000 #FF0000 #FF0000 #EBDBB2   #FABD2F
-client.focused_inactive #FF0000 #FF0000 #FF0000 #EBDBB2   #EBDBB2
+client.focused          #FF0000 #FF0000 #FF0000 #BBC3D4   #81A1C1
+client.focused_inactive #FF0000 #FF0000 #FF0000 #81A1C1   #5E81AC
 client.unfocused        #FF0000 #FF0000 #FF0000 #222222   #222222
 client.urgent           #FF0000 #FF0000 #FF0000 #FFFFFF   #FFFFFF
 client.placeholder      #FF0000 #FF0000 #FF0000 #FFFFFF   #FFFFFF
@@ -189,6 +196,8 @@ client.background       #ffffff
 #///////////////////////////////////////////////////////////////////////////////////////
 #/// Startup programs
 #///////////////////////////////////////////////////////////////////////////////////////
+exec --no-startup-id polybar -r example
+exec_always --no-startup-id rm ~/.cache/i3-meta-workspace
 exec --no-startup-id xcompmgr
 exec --no-startup-id ~/.fehbg
 exec --no-startup-id nm-applet
@@ -196,26 +205,3 @@ exec --no-startup-id dunst
 exec --no-startup-id unclutter
 exec --no-startup-id xflux -l 50.1 -g 14.4
 exec --no-startup-id udiskie
-
-#///////////////////////////////////////////////////////////////////////////////////////
-#/// Status bar
-#///////////////////////////////////////////////////////////////////////////////////////
-bar {
-    font pango:DejaVuSansM Nerd Font:style=Oblique 12
-
-    colors {
-        statusline  #888888
-        background  #303030
-
-#       class              border backgrd text
-        focused_workspace  #191919 #191919 #FABD2F
-        active_workspace   #191919 #191919 #6b6b6b
-        inactive_workspace #191919 #191919 #ACACAC
-        urgent_workspace   #191919 #191919 #EBDBB2
-    }
-
-    status_command i3blocks -c ~/.config/i3/i3blocks/config
-    position top
-    mode dock
-    modifier None
-}
