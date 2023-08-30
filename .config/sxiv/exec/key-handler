@@ -1,12 +1,59 @@
-#!/usr/bin/sh
+#!/bin/bash
 
-while read file; do
+ROFI_FILENAME_CFG="${HOME}/.config/rofi/config-filename.rasi"
+ROFI_YESNO_CFG="${HOME}/.config/rofi/config-yesno.rasi"
+
+function help() {
+    awk '
+    /"["|a-zA-Z]"/ {
+        gsub(/"/, "", $1);
+        printf "%s ", $1;
+
+        found_doc = 0;
+        for(i = NF; i > 0; --i) {
+            if ($i == ";;") {
+                found_doc = i + 2;
+                break;
+            }
+        }
+        if (found_doc != 0) {
+            for (i = found_doc; i <= NF; ++i) {
+                printf "%s ", $i;
+            }
+        }
+        printf "\n"
+    }
+    ' <(cat "${BASH_SOURCE[0]}")
+}
+
+function delete() {
+    [ "$(printf "No\\nYes" | rofi -dmenu -i -p "Really delete ${1}?" -selected-row 0 -theme "${ROFI_YESNO_CFG}")" = "Yes" ] && \
+        rm -f "${1}" && \
+        notify-send -- "${1} deleted."
+}
+
+function rename() {
+    NEW_NAME="$(rofi -dmenu -i -p "Rename \"${1}\" to: " -filter "${1}" -theme "${ROFI_FILENAME_CFG}")" && \
+        [ -n "${NEW_NAME}" ] && mv "${1}" "${NEW_NAME}" && \
+        notify-send -- "Renamed ${1} to ${NEW_NAME}"
+}
+
+function move() {
+    DST="$(rofi -dmenu -p "Move \"${1}\" to: ")" && \
+        [ -n "${DST}" ] && mv "${1}" "${DST}" && \
+        notify-send -- "${1} moved to ${DST}"
+}
+
+while read -r file; do
     case "$1" in
-    "w") feh --bg-scale "$file" ;;
-	"y") echo -n "$file" | clipboard ;;
-	"Y") readlink -f "$file" | tr -d '\n' | clipboard ;;
-    "i") notify-send -- "$(ls -l ${file})" ;;
-	"d") [ "$(printf "No\\nYes" | dmenu -i -p "Really delete $file?")" = "Yes" ] && rm -f "$file" && notify-send "$file deleted." ;;
-	"e") st nvim "${file%%.jpg}.txt" & ;;
+    "w") feh --bg-scale "${file}" && notify-send -- "Wallpaper updated" ;; # Set this image as wallpaper
+    "y") clipboard <(echo -n "${file}") && notify-send -- "Filename \"${file}\" copied to clipboard" ;; # Copy filename to clipboard
+    "Y") clipboard -t "image/png" <(cat "${file}") && notify-send -- "Image data copied to clipboard" "$(basename "${file}")" ;; # Copy image data to clipboard
+    "i") notify-send -- "Filename:" "${file}" ;; # Send filename to notifications
+	"d") delete "${file}" ;; # Delete this file
+	"e") st nvim "${file%%.jpg}.txt" & ;; # Open filename.txt in vim
+	"r") rename "${file}" ;; # Raname file
+	"m") move "${file}" ;; # Move file
+    "h"|"H"|"?") notify-send -- "sxiv usage:" "$(help)" ;; # Send this help to notifications
     esac
 done
