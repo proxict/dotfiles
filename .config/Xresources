@@ -3,6 +3,7 @@ st.alpha: 0.95
 *fading: 35
 *fadeColor: #4C566A
 
+*.alpha-background: #af202020
 *.foreground: #E1D8B3
 *.background: #202020
 *.color0: #242933
