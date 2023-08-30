@@ -28,7 +28,7 @@ source "${SELF_DIR}/colors"
 while read -r meta; do
     STATUS="$(echo "${meta}" | awk -F# '{ print $1 }')"
     SONG="$(echo "${meta}" | awk -F# '{ print $2 }')"
-    COLOR="white"
+    COLOR="red"
     [ "${STATUS}" = "Playing" ] && COLOR="green"
 
     echo -n "%{F$(toColor "${COLOR}")}  %{F-}" && echo "${SONG:0:100}"

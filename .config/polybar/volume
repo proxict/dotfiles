@@ -35,6 +35,6 @@ fi
 
 COLOR="$(interpolateColor "red" "green" "${volumeLevel}")"
 
-[ "$(get-volume-muted)" = "true" ] && COLOR="red"
+[ "$(get-volume-muted)" = "true" ] && COLOR="red" && LABEL="󰝟"
 colorize "${COLOR}" "${LABEL} ${volumeLevel}"
 
