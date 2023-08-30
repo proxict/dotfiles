@@ -32,4 +32,7 @@ while IFS=$'\n' read -r line; do
     esac
 done
 
-PASSWORD="$(rofi -dmenu -disable-history -window-title "${TITLE}" -p "${PROMPT}" -password -l 0)" && echo "D ${PASSWORD}" && echo "OK" || echo "ERR 83886179 Operation cancelled <Pinentry>"
+ROFI_CFG="${HOME}/.config/rofi/config-password.rasi"
+
+PASSWORD="$(rofi -dmenu -disable-history -window-title "${TITLE}" -p "${PROMPT}" -password -l 0 -theme "${ROFI_CFG}")" && \
+    echo "D ${PASSWORD}" && echo "OK" || echo "ERR 83886179 Operation cancelled <Pinentry>"
