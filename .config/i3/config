@@ -15,6 +15,7 @@ workspace 1 gaps outer 0
 for_window [class="qutebrowser"] border pixel 0
 for_window [title="calendar.vim-33b067d9-70a0-40df-9a11-dbe3e0b55ec6"] floating enable, resize set 800 600, move absolute position center
 for_window [title="volume-mixer-da559d24-3c83-4b1e-b8e1-f152d4a66b79"] floating enable, resize set 800 600, move absolute position center
+for_window [class="wallpaper-selector-a7e24023-ecfd-4391-92ad-0c329a259d41"] floating enable, resize set 1400 600, move absolute position center
 for_window [title="Friends List" class="Steam"] floating enable
 
 assign [class="Spotify"] ""
@@ -183,9 +184,9 @@ bindsym Control+Shift+period exec --no-startup-id dunstctl context
 
 # class                 header  header  header  indicator window
 #                       border  backgr. text    color     border
-client.focused          #FF0000 #FF0000 #FF0000 #BBC3D4   #81A1C1
-client.focused_inactive #FF0000 #FF0000 #FF0000 #81A1C1   #5E81AC
-client.unfocused        #FF0000 #FF0000 #FF0000 #222222   #222222
+client.focused          #FF0000 #FF0000 #FF0000 #BBC3D4   #565C69
+client.focused_inactive #FF0000 #FF0000 #FF0000 #81A1C1   #2E3440
+client.unfocused        #FF0000 #FF0000 #FF0000 #2E3440   #2E3440
 client.urgent           #FF0000 #FF0000 #FF0000 #FFFFFF   #FFFFFF
 client.placeholder      #FF0000 #FF0000 #FF0000 #FFFFFF   #FFFFFF
 
