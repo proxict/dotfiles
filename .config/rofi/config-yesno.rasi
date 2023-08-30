@@ -3,3 +3,8 @@ configuration {
 }
 
 @theme "/home/proxict/.config/rofi/themes/rounded-nord-dark.rasi"
+
+entry {
+    placeholder:        "";
+    placeholder-color:  @fg3;
+}
