@@ -2,4 +2,6 @@ configuration {
     show-icons:      true;
 }
 
+//@theme "/home/proxict/.config/rofi/themes/rounded-nord-dark.rasi"
+//@theme "/home/proxict/.config/rofi/themes/spotlight-dark.rasi"
 @theme "/home/proxict/.config/rofi/themes/rounded-nord-dark.rasi"
