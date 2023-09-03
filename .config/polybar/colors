@@ -50,7 +50,7 @@ function toColor() {
 }
 
 function colorize() {
-[ "$1" = '-n' ] && FLAGS=("-n") && shift
+  [ "$1" = '-n' ] && FLAGS=("-n") && shift
   echo "${FLAGS[@]}" "%{F$(toColor "${1}")}${2}%{F-}"
 }
 

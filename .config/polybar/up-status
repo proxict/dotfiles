@@ -28,7 +28,7 @@ MAX_NUMBER_OF_PLAYERS=18
 SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source "${SELF_DIR}/colors"
 
-NUMBER_OF_PLAYERS=$("${SELF_DIR}/up-scoreboard" "${1}" | head -n1 | grep "Scoreboard" | grep -Eo "[0-9]+" || echo 0)
+NUMBER_OF_PLAYERS=$(up-scoreboard "${1}" | head -n1 | grep "Scoreboard" | grep -Eo "[0-9]+" || echo 0)
 FILLED_PERCENTAGE=$(( NUMBER_OF_PLAYERS * 100 / MAX_NUMBER_OF_PLAYERS ))
 
-echo "%{F$(interpolateColor "red" "green" "${FILLED_PERCENTAGE}")} ${NUMBER_OF_PLAYERS}%{F-}"
+colorize "$(interpolateColor "red" "green" "${FILLED_PERCENTAGE}")" " ${NUMBER_OF_PLAYERS}"
