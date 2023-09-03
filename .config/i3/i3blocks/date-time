@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-date '+%H:%M:%S'
+date '+%H:%M:%S '
 
 case $BLOCK_BUTTON in
     1) gsimplecal ;;

@@ -32,19 +32,16 @@ esac
 
 source colors
 
+LABEL=""
 volumeLevel=$(get-volume)
 if [ "${volumeLevel}" -ge 66 ]; then
-  echo -n "  "
+  LABEL=""
 elif [ "${volumeLevel}" -ge 33 ]; then
-  echo -n "  "
-else
-  echo -n "  "
+  LABEL=""
 fi
 
-muted=$(get-volume-muted)
-if [ "${muted}" = "true" ]; then
-  colorize "red" "${volumeLevel}"
-else
-  echo ${volumeLevel}
-fi
+COLOR="$(interpolateColor "red" "green" "${volumeLevel}")"
+
+[ "$(get-volume-muted)" = "true" ] && COLOR="red" && LABEL="󰝟"
+colorize "${COLOR}" "${LABEL}  ${volumeLevel}"
 

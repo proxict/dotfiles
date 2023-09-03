@@ -29,10 +29,4 @@ esac
 
 source colors
 
-muted=$(get-microphone-muted)
-if [ "${muted}" = "true" ]; then
-  colorize "red" ""
-else
-  colorize "gray" ""
-fi
-
+{ [ "$(get-microphone-muted)" = "true" ] && colorize "red" ""; } || colorize "green" ""

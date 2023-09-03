@@ -15,7 +15,7 @@ workspace 1 gaps outer 0
 for_window [class="qutebrowser"] border pixel 0
 for_window [title="calendar.vim-33b067d9-70a0-40df-9a11-dbe3e0b55ec6"] floating enable, resize set 800 600, move absolute position center
 for_window [title="volume-mixer-da559d24-3c83-4b1e-b8e1-f152d4a66b79"] floating enable, resize set 800 600, move absolute position center
-for_window [class="wallpaper-selector-a7e24023-ecfd-4391-92ad-0c329a259d41"] floating enable, resize set 1400 600, move absolute position center
+for_window [class="python-a7e24023-ecfd-4391-92ad-0c329a259d41"] floating enable, resize set 800 600, move absolute position center
 for_window [title="Friends List" class="Steam"] floating enable
 
 assign [class="Spotify"] ""
@@ -36,6 +36,8 @@ bindsym $mod+Shift+o gaps outer current minus 5
 
 bindsym $mod+g gaps inner current set 0; gaps outer current set 0
 bindsym $mod+Shift+g gaps inner current set 15; gaps outer current set 15
+
+bindsym $mod+c exec st -c 'python-a7e24023-ecfd-4391-92ad-0c329a259d41' -e python -q 2>/dev/null
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -111,7 +113,7 @@ bindsym Mod1+Shift+Tab workspace prev
 bindsym $mod+Shift+c reload
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart && polybar-msg cmd restart
+bindsym $mod+Shift+r restart
 
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
@@ -142,10 +144,10 @@ bindsym $mod+r mode "resize"
 # bindsym XF86Sleep exec --no-startup-id padlock $(blur $(screenshot)) && setxkbmap us && pkill -SIGRTMIN+1 i3blocks && systemctl suspend
 
 # Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id volume-up && polybar-msg action "#volume.hook.0"
-bindsym XF86AudioLowerVolume exec --no-startup-id volume-down && polybar-msg action "#volume.hook.0"
-bindsym XF86AudioMute exec --no-startup-id volume-toggle && polybar-msg action "#volume.hook.0"
-bindsym XF86AudioMicMute exec --no-startup-id microphone-toggle && polybar-msg action "#microphone.hook.0"
+bindsym XF86AudioRaiseVolume exec --no-startup-id volume-up && pkill -SIGRTMIN+3 i3blocks
+bindsym XF86AudioLowerVolume exec --no-startup-id volume-down && pkill -SIGRTMIN+3 i3blocks
+bindsym XF86AudioMute exec --no-startup-id volume-toggle && pkill -SIGRTMIN+3 i3blocks
+bindsym XF86AudioMicMute exec --no-startup-id microphone-toggle && pkill -SIGRTMIN+4 i3blocks
 bindsym XF86AudioPlay exec --no-startup-id playerctl --player=spotify play-pause
 bindsym XF86AudioNext exec --no-startup-id playerctl next
 bindsym XF86AudioPrev exec --no-startup-id playerctl previous
@@ -190,12 +192,11 @@ client.unfocused        #FF0000 #FF0000 #FF0000 #2E3440   #2E3440
 client.urgent           #FF0000 #FF0000 #FF0000 #FFFFFF   #FFFFFF
 client.placeholder      #FF0000 #FF0000 #FF0000 #FFFFFF   #FFFFFF
 
-client.background       #ffffff
+client.background       #000000
 
 #///////////////////////////////////////////////////////////////////////////////////////
 #/// Startup programs
 #///////////////////////////////////////////////////////////////////////////////////////
-exec --no-startup-id polybar -r example
 exec_always --no-startup-id rm ~/.cache/i3-meta-workspace
 exec --no-startup-id xcompmgr
 exec --no-startup-id ~/.fehbg
@@ -204,3 +205,29 @@ exec --no-startup-id dunst
 exec --no-startup-id unclutter
 exec --no-startup-id xflux -l 50.1 -g 14.4
 exec --no-startup-id udiskie
+
+#///////////////////////////////////////////////////////////////////////////////////////
+#/// Status bar
+#///////////////////////////////////////////////////////////////////////////////////////
+bar {
+    font pango:DejaVu Sans:style=Oblique 12, Symbols Nerd Font:style=Regular 12
+
+    colors {
+        set_from_resource $background background #000000
+        set_from_resource $background_active color8 #000000
+        background $background
+
+#       class              border backgrd text
+        focused_workspace  $background_active $background_active #FABD2F
+        active_workspace   $background $background #6b6b6b
+        inactive_workspace $background $background #ACACAC
+        urgent_workspace   $background $background #EBDBB2
+    }
+
+    status_command i3blocks -c ~/.config/i3/i3blocks/config
+    position top
+    mode dock
+    modifier None
+    tray_output None
+    workspace_min_width 30
+}

@@ -27,9 +27,9 @@ source colors
 while read -r meta; do
     STATUS="$(echo "${meta}" | awk -F# '{ print $1 }')"
     SONG="$(echo "${meta}" | awk -F# '{ print $2 }')"
-    COLOR="gray"
+    COLOR="red"
     [ "${STATUS}" = "Playing" ] && COLOR="green"
 
-    line="$(colorizeBegin ${COLOR} && echo -n "  " && colorizeEnd -n && echo "${SONG:0:100}")"
-    echo "${line}" | sed -e 's|&|&amp;|g'
+    line="$(colorize -n ${COLOR} "  " && echo "${SONG:0:100}")"
+    echo "${line/&/&amp}"
 done

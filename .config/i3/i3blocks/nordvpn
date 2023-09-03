@@ -22,40 +22,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-#status=$(nordvpn status | awk '/Status:/ {print $2}')
-status=$(nordvpn status | grep -oP '(?<=(Status:)\s)\w+')
-
-function showIp {
-    IP=$(nordvpn status | awk '/^IP: / {print $2}')
-    notify-send -i /var/lib/nordvpn/icon.svg "Assigned IP: ${IP}"
-    echo -n "${IP}" | xclip -selection clipboard &> /dev/null
-}
-
-function toggleState {
-    if [ "${status}" = "Disconnected" ]; then
-        notify-send -i /var/lib/nordvpn/icon.svg "Finding the fastest server..."
-        nordvpn connect > /dev/null
-    elif [ "${status}" = "Connected" ]; then
-        nordvpn disconnect > /dev/null
-    fi
-}
-
 case $BLOCK_BUTTON in
-    1) [[ "${status}" = "Connected" ]] && showIp ;;
-    2) toggleState ;;
-    3) notify-send -i /usr/share/icons/hicolor/scalable/apps/nordvpn.svg "NordVPN" "$(nordvpn status | sed -E '1s|^.*(A new version.*$)|<b>\r\1\r</b>|g; /Status:|Current /d')" ;;
+    1) notify-send -i /usr/share/icons/hicolor/scalable/apps/nordvpn.svg "NordVPN" "$(nordvpn status | sed -E '1s|^.*(A new version.*$)|<b>\r\1\r</b>|g; /Status:|Current /d')" ;;
+    2) nordvpn-toggle ;;
     *) ;;
 esac
 
 source colors
 
-ICON="󰖂"
-#ICON="󱀣"
-if [ "${status}" = "Connected" ]; then
-  colorizeBegin "magenta" && echo -n "󰕥" && colorizeEnd -n
-  server=$(nordvpn status | awk '/^Hostname: / { print $2 }' | cut -d \. -f 1)
-  echo " ${server}"
+if nordvpn-status; then
+  colorize -n "green" "󰕥 "
+  nordvpn status | awk '/^Hostname: / { print $2 }' | cut -d \. -f 1
 else
-  colorize "gray" "󰦞"
+  colorize "red" "󰦞"
 fi
 

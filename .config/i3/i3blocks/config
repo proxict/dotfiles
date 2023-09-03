@@ -1,97 +1,87 @@
 align=center
-color=#5C5C5C
+color=#E1D8B3
 separator=false
-separator_block_width=30
+separator_block_width=20
 
 command=~/.config/i3/i3blocks/$BLOCK_NAME
 markup=pango
 interval=5
 
+[spotify-prev]
+separator_block_width=5
 [spotify]
-color=#ACACAC
 interval=persist
+separator_block_width=5
+[spotify-next]
 [separator]
 
 [up-status]
-instance=united-promod.com:28960
-hostname=United-Promod S&D 1
-label= 
+instance=28960
+HOSTNAME=S&D 1
 interval=20
 [separator]
 
 [up-status]
-instance=united-promod.com:28961
-hostname=United-Promod S&D 2
-label= 
+instance=28961
+HOSTNAME=S&D 2
 interval=20
 [separator]
 
 [up-status]
-instance=united-promod.com:28963
-hostname=United-Promod TDM
-label= 
+instance=28963
+HOSTNAME=TDM
 interval=20
 [separator]
 
 [layout]
-color=#FABD2F
 label=  
 command=setxkbmap -print | grep xkb_symbols | awk '{print $4}' | awk -F"+" '{print $2}'
 signal=1
 interval=once
 [separator]
 
+[ucpu]
+command=~/.config/i3/i3blocks/ucpu -i 1s
+interval=persist
+[separator]
+
 [cpu-temp]
-CPU_MAX=70
-interval=5
+command=~/.config/i3/i3blocks/cpu-temp 80
+interval=1
 [separator]
 
-[governor]
-interval=10
-[separator]
-
-[mem-used]
-COLOR=#ACACAC
+[memory]
 label=󰘚 
 [separator]
 
 [disk]
-instance=/
-color=#ACACAC
+command=~/.config/i3/i3blocks/disk / 10
 label= 
 [separator]
 
-[pacman-updates]
-color=#ACACAC
+[pacman]
 signal=5
 interval=3600
-label=  
 [separator]
 
-[ethernet]
-interval=3
-instance=enp0s31f6
-label=󰈀
+[game-mode]
+interval=10
 [separator]
 
 [nordvpn]
-color=#ACACAC
 interval=5
 [separator]
 
 [microphone]
-color=#ACACAC
 signal=4
 interval=once
 [separator]
 
 [volume]
-color=#FABD2F
 signal=3
 interval=once
 [separator]
 
 [date-time]
-color=#ACACAC
 label=  
 interval=1

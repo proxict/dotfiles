@@ -24,17 +24,13 @@
 
 source colors
 
-NUMBER_OF_UPDATES=$(checkupdates | wc -l)
-echo ${NUMBER_OF_UPDATES}
-[ "${NUMBER_OF_UPDATES}" -gt "0" ] && printColor "green"
+case $BLOCK_BUTTON in
+	1) notify-send " Memory hogs:" "$(mem-hogs | head | column -s ';' -t)" ;;
+esac
 
-## To automatically update the status of updates after pacman update,
-## create a pacman hook /etc/pacman.d/hooks/10-after-update-notifier.hook:
-# [Trigger]
-# Operation = Upgrade
-# Type = Package
-# Target = *
-# [Action]
-# Description = Notifying i3blocks about update...
-# When = PostTransaction
-# Exec = /usr/bin/pkill -SIGRTMIN+5 i3blocks
+MEM_USED="$(free -h | awk '/^Mem:/ {print $3 "/" $2}')"
+PERCENT_USED="$(free -m | awk '/^Mem:/ {printf "%.3f", ($3/$2 * 100) }')"
+
+COLOR="$(interpolateColor "green" "l-red" "${PERCENT_USED}")"
+colorize "${COLOR}" "${MEM_USED}"
+

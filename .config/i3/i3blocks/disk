@@ -19,25 +19,17 @@ ALERT_LOW="${1:-10}" # color will turn red under this value (default: 10%)
 
 source colors
 
-df -h -P -l "$DIR" | awk -v alert_low=$ALERT_LOW -v alert_color=$(toColor "red") '
-/\/.*/ {
-	# full text
-	print $4
+DIR="${1:-$HOME}"
 
-	# short text
-	print $4
-
+df -h -l -P "$DIR" | awk -v low_threshold="${2:-10}" -v low_color="$(colorizeBegin "red")" \
+'/\/.*/ {
 	use=$5
+	gsub(/%$/, "", use)
 
-	# no need to continue parsing
+	if (100 - use < low_threshold) {
+        print low_color $4 "%{F-}"
+    } else {
+        print $4
+    }
 	exit 0
-}
-
-END {
-	gsub(/%$/,"",use)
-	if (100 - use < alert_low) {
-		# color
-		print alert_color
-	}
-}
-'
+}'

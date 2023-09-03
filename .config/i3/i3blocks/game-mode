@@ -2,7 +2,7 @@
 
 # MIT License
 # 
-# Copyright (c) 2023 Marek Bogusovsky
+# Copyright (c) 2021 Marek Bogusovsky
 # 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,12 +22,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-source "${SELF_DIR}/colors"
+function toggleGameMode() {
+    { [ "$(tabellarius "governor")" = "powersave" ] && tabellarius governor performance >/dev/null; } || tabellarius governor powersave >/dev/null
+}
 
-MEM_USED="$(free -h | awk '/^Mem:/ {print $3 "/" $2}')"
-PERCENT_USED="$(free -m | awk '/^Mem:/ {printf "%.3f", ($3/$2 * 100) }')"
+case $BLOCK_BUTTON in
+    1) toggleGameMode ;;
+    *) ;;
+esac
 
-COLOR="$(interpolateColor "green" "l-red" "${PERCENT_USED}")"
-colorize "${COLOR}" "${MEM_USED}"
+source colors
+
+GOVERNOR="$(tabellarius "governor")"
+{ [ "${GOVERNOR}" = "performance" ] && colorize "green" " "; } || colorize "red" " "
 

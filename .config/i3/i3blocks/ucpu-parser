@@ -1,19 +1,19 @@
 #!/bin/bash
 
 # MIT License
-# 
+#
 # Copyright (c) 2023 Marek Bogusovsky
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,13 +22,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-[ -z "$1" ] && echo "No port selected" && exit 1
-MAX_NUMBER_OF_PLAYERS=18
+source colors
 
-SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-source "${SELF_DIR}/colors"
+LABELS="󰡳󰡵󰊚󰡴"
 
-NUMBER_OF_PLAYERS=$(up-scoreboard "${1}" | head -n1 | grep "Scoreboard" | grep -Eo "[0-9]+" || echo 0)
-FILLED_PERCENTAGE=$(( NUMBER_OF_PLAYERS * 100 / MAX_NUMBER_OF_PLAYERS ))
+while read -r utilization; do
+    COLOR="$(interpolateColor "green" "red" "${utilization}" )"
 
-colorize "$(interpolateColor "red" "green" "${FILLED_PERCENTAGE}")" " ${NUMBER_OF_PLAYERS}"
+    LABEL_INDEX="$( echo "(${utilization} -1) / 25" | bc )"
+    LABEL=${LABELS:${LABEL_INDEX}:1}
+    OUTPUT="$(echo -n "${LABEL}  " && colorize -n "${COLOR}" "${utilization:0:4}%")"
+    echo "${OUTPUT}"
+done

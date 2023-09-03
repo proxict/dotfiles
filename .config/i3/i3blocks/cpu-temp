@@ -29,19 +29,13 @@ esac
 source colors
 
 CPU_TEMP=$(cpu-core-temp)
-CPU_MAX=${CPU_MAX:-100}
+CPU_MAX=${1:-100}
 
 LABELS=""
 
-# ( (${CPU_TEMP} + (${CPU_MAX} / 5)) / (${CPU_MAX} / 5) ) * 4 / 5 ==
-# ((x + (y / 5)) / (y / 5)) * 4 / 5 ==
-LABEL_INDEX=$(( 4 * (${CPU_TEMP} + ${CPU_MAX} / 5) / ${CPU_MAX} ))
+LABEL_INDEX=$(( 4 * (CPU_TEMP + CPU_MAX / 5) / CPU_MAX ))
 LABEL=${LABELS:${LABEL_INDEX}:1}
 
-COLOR=$(interpolateColor "#00ff00" "#ff0000" $(( ${CPU_TEMP} * 100 / ${CPU_MAX} )) )
+COLOR=$(interpolateColor "green" "red" $(( CPU_TEMP * 100 / CPU_MAX )) )
 
-echo -n "${LABEL} "
-colorizeBegin ${COLOR}
-echo -n "${CPU_TEMP}°C"
-colorizeEnd
-
+echo -n "${LABEL} " && colorize "${COLOR}" "${CPU_TEMP}°C"

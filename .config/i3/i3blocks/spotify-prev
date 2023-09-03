@@ -1,0 +1,11 @@
+#!/bin/bash
+
+[ "$(playerctl --player=spotify status 2>&1)" = "No players found" ] && exit
+
+echo ""
+
+case $BLOCK_BUTTON in
+    1) playerctl --player=spotify previous > /dev/null ;;
+    *) ;;
+esac
+

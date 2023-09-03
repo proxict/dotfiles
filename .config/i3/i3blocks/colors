@@ -22,23 +22,36 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+function _c() {
+    xrdb -quiet -get "$1" | tr -d '\n'
+}
+
 function toColor() {
     [ "${1:0:1}" == "#" ] && echo -n "${1}" && return 0
     case $1 in
-        "gray") echo -n "#acacac" ;;
-        "magenta") echo -n "#8D20AE" ;;
-        "green") echo -n "#a6e22e" ;;
-        "red") echo -n "#ba3232" ;;
-        *) echo -n "#ff00e0" ;; # error colour
+         "0" | "black"        |   "color0")   _c color0 ;;
+         "1" | "red"          |   "color1")   _c color1 ;;
+         "2" | "green"        |   "color2")   _c color2 ;;
+         "3" | "yellow"       |   "color3")   _c color3 ;;
+         "4" | "blue"         |   "color4")   _c color4 ;;
+         "5" | "magenta"      |   "color5")   _c color5 ;;
+         "6" | "cyan"         |   "color6")   _c color6 ;;
+         "7" | "white"        |   "color7")   _c color7 ;;
+         "8" | "l-black"      |   "color8")   _c color8 ;;
+         "9" | "l-red"        |   "color9")   _c color9 ;;
+        "10" | "l-green"      |   "color10")  _c color10 ;;
+        "11" | "l-yellow"     |   "color11")  _c color11 ;;
+        "12" | "l-blue"       |   "color12")  _c color12 ;;
+        "13" | "l-magenta"    |   "color13")  _c color13 ;;
+        "14" | "l-cyan"       |   "color14")  _c color14 ;;
+        "15" | "l-white"      |   "color15")  _c color15 ;;
+        *) echo -n "#ff00e0" ;; # error color
     esac
 }
 
-function printColor() {
-    toColor "${1}" && echo && toColor "${1}" && echo
-}
-
 function colorize {
-  echo "<span foreground=\"$(toColor "${1}")\">${2}</span>"
+  [ "$1" = '-n' ] && FLAGS=("-n") && shift
+  echo "${FLAGS[@]}" "<span foreground=\"$(toColor "${1}")\">${2}</span>"
 }
 
 function colorizeBegin {

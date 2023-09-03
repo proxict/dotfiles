@@ -2,7 +2,7 @@
 
 # MIT License
 # 
-# Copyright (c) 2023 Marek Bogusovsky
+# Copyright (c) 2020 Marek Bogusovsky
 # 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,19 +22,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-source "${SELF_DIR}/colors"
+source colors
 
-LABEL=""
-volumeLevel=$(get-volume)
-if [ "${volumeLevel}" -ge 66 ]; then
-  LABEL=""
-elif [ "${volumeLevel}" -ge 33 ]; then
-  LABEL=""
-fi
+NUMBER_OF_UPDATES="$(checkupdates | wc -l)"
+[ "${NUMBER_OF_UPDATES}" -gt "0" ] && colorize "green" "  ${NUMBER_OF_UPDATES}" || echo "  ${NUMBER_OF_UPDATES}"
 
-COLOR="$(interpolateColor "red" "green" "${volumeLevel}")"
-
-[ "$(get-volume-muted)" = "true" ] && COLOR="red" && LABEL="󰝟"
-colorize "${COLOR}" "${LABEL} ${volumeLevel}"
-
+## To automatically update the status of updates after pacman update,
+## create a pacman hook /etc/pacman.d/hooks/10-after-update-notifier.hook:
+# [Trigger]
+# Operation = Upgrade
+# Type = Package
+# Target = *
+# [Action]
+# Description = Notifying i3blocks about update...
+# When = PostTransaction
+# Exec = /usr/bin/pkill -SIGRTMIN+5 i3blocks
