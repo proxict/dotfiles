@@ -22,10 +22,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-case ${BLOCK_BUTTON} in
-    1) notify-send "CPU hogs:" "$(ps axch -o cmd:15,%cpu --sort=-%cpu | head)" ;;
-esac
-
 source colors
 
 CPU_TEMP=$(cpu-core-temp)
