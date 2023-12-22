@@ -1,7 +1,7 @@
 #!/bin/bash
 
-current=`setxkbmap -print | grep xkb_symbols | awk '{print $4}' | awk -F"+" '{print $2}'`
-if [ "$current" == "us" ]; then
+current="$(setxkbmap -print | grep xkb_symbols | awk '{print $4}' | awk -F"+" '{print $2}')"
+if [ "${current}" == "us" ]; then
     setxkbmap "cz(qwerty)"
 else
   setxkbmap us
