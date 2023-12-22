@@ -37,7 +37,7 @@ bindsym $mod+Shift+o gaps outer current minus 5
 bindsym $mod+g gaps inner current set 0; gaps outer current set 0
 bindsym $mod+Shift+g gaps inner current set 15; gaps outer current set 15
 
-bindsym $mod+c exec st -c 'python-a7e24023-ecfd-4391-92ad-0c329a259d41' -e python -q 2>/dev/null
+bindsym $mod+c exec --no-startup-id st -c 'python-a7e24023-ecfd-4391-92ad-0c329a259d41' -e python -q 2>/dev/null
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -80,31 +80,31 @@ bindsym $mod+f fullscreen toggle
 bindsym $mod+Shift+space floating toggle
 
 # switch to workspace
-bindsym $mod+1 exec "meta-workspace --switch-to 1"
-bindsym $mod+2 exec "meta-workspace --switch-to 2"
-bindsym $mod+3 exec "meta-workspace --switch-to 3"
-bindsym $mod+4 exec "meta-workspace --switch-to 4"
-bindsym $mod+5 exec "meta-workspace --switch-to 5"
-bindsym $mod+6 exec "meta-workspace --switch-to 6"
-bindsym $mod+7 exec "meta-workspace --switch-to 7"
-bindsym $mod+8 exec "meta-workspace --switch-to 8"
-bindsym $mod+9 exec "meta-workspace --switch-to 9"
-bindsym $mod+0 exec "meta-workspace --switch-to 10"
+bindsym $mod+1 exec --no-startup-id "meta-workspace --switch-to 1"
+bindsym $mod+2 exec --no-startup-id "meta-workspace --switch-to 2"
+bindsym $mod+3 exec --no-startup-id "meta-workspace --switch-to 3"
+bindsym $mod+4 exec --no-startup-id "meta-workspace --switch-to 4"
+bindsym $mod+5 exec --no-startup-id "meta-workspace --switch-to 5"
+bindsym $mod+6 exec --no-startup-id "meta-workspace --switch-to 6"
+bindsym $mod+7 exec --no-startup-id "meta-workspace --switch-to 7"
+bindsym $mod+8 exec --no-startup-id "meta-workspace --switch-to 8"
+bindsym $mod+9 exec --no-startup-id "meta-workspace --switch-to 9"
+bindsym $mod+0 exec --no-startup-id "meta-workspace --switch-to 10"
 
 # move focused container to workspace
-bindsym $mod+Shift+1 exec "meta-workspace --move-to 1"
-bindsym $mod+Shift+2 exec "meta-workspace --move-to 2"
-bindsym $mod+Shift+3 exec "meta-workspace --move-to 3"
-bindsym $mod+Shift+4 exec "meta-workspace --move-to 4"
-bindsym $mod+Shift+5 exec "meta-workspace --move-to 5"
-bindsym $mod+Shift+6 exec "meta-workspace --move-to 6"
-bindsym $mod+Shift+7 exec "meta-workspace --move-to 7"
-bindsym $mod+Shift+8 exec "meta-workspace --move-to 8"
-bindsym $mod+Shift+9 exec "meta-workspace --move-to 9"
-bindsym $mod+Shift+0 exec "meta-workspace --move-to 10"
+bindsym $mod+Shift+1 exec --no-startup-id "meta-workspace --move-to 1"
+bindsym $mod+Shift+2 exec --no-startup-id "meta-workspace --move-to 2"
+bindsym $mod+Shift+3 exec --no-startup-id "meta-workspace --move-to 3"
+bindsym $mod+Shift+4 exec --no-startup-id "meta-workspace --move-to 4"
+bindsym $mod+Shift+5 exec --no-startup-id "meta-workspace --move-to 5"
+bindsym $mod+Shift+6 exec --no-startup-id "meta-workspace --move-to 6"
+bindsym $mod+Shift+7 exec --no-startup-id "meta-workspace --move-to 7"
+bindsym $mod+Shift+8 exec --no-startup-id "meta-workspace --move-to 8"
+bindsym $mod+Shift+9 exec --no-startup-id "meta-workspace --move-to 9"
+bindsym $mod+Shift+0 exec --no-startup-id "meta-workspace --move-to 10"
 
 # Toggle meta-workspace
-bindsym $mod+x exec "meta-workspace --toggle"
+bindsym $mod+x exec --no-startup-id "meta-workspace --toggle"
 
 bindsym Mod1+Tab workspace next
 bindsym Mod1+Shift+Tab workspace prev
@@ -116,7 +116,7 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -156,7 +156,7 @@ bindsym XF86AudioPrev exec --no-startup-id playerctl previous
 bindsym XF86TouchpadToggle exec --no-startup-id synclient TouchpadOff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')
 
 # Toggle keyboard layout
-bindsym $mod+space exec --no-startup-id ~/.bin/toggle-kb-layout
+bindsym $mod+space exec --no-startup-id ~/.bin/toggle-kb-layout && pkill -SIGRTMIN+1 i3blocks
 
 # Keyboard backlight control
 bindsym XF86KbdBrightnessUp exec --no-startup-id ~/.bin/kb-brightness +1 && pkill -SIGRTMIN+4 i3blocks
