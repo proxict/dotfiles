@@ -25,11 +25,18 @@
 source colors
 
 while read -r meta; do
-    STATUS="$(echo "${meta}" | awk -F# '{ print $1 }')"
-    SONG="$(echo "${meta}" | awk -F# '{ print $2 }')"
+    STATUS="$(echo "${meta}" | awk -F'>' '{ print $1 }')"
+    ALBUM="$(echo "${meta}"  | awk -F'>' '{ print $2 }')"
+    ARTIST="$(echo "${meta}" | awk -F'>' '{ print $3 }')"
+    TITLE="$(echo "${meta}"  | awk -F'>' '{ print $4 }')"
+
+    NAME="${ARTIST}"
+    [ -z "${NAME}" ] && NAME="${ALBUM}"
+    TEXT="${NAME} - ${TITLE}"
+
     COLOR="red"
     [ "${STATUS}" = "Playing" ] && COLOR="green"
 
-    line="$(colorize -n ${COLOR} "  " && echo "${SONG:0:100}")"
-    echo "${line/&/&amp}"
+    line="$(colorize -n ${COLOR} "  " && echo "${TEXT:0:100}")"
+    echo "${line}"
 done

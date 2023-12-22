@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-tee | ./spotify-button-dispatcher &
+cat | ./spotify-button-dispatcher &
 
-playerctl --player=spotify metadata --format '{{ status }}#{{ artist }} - {{ title }}' --follow 2> /dev/null | ./spotify-parser
+playerctl --player=spotify metadata --format '{{ markup_escape(status) }}>{{ markup_escape(album) }}>{{ markup_escape(artist) }}>{{ markup_escape(title) }}' --follow 2> /dev/null | ./spotify-parser
 
