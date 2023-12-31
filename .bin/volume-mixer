@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# For best effect, add this line to i3 config:
+# for_window [title="calendar.vim"] floating enable, resize set 800 600, move absolute position center
+
+st -t 'volume-mixer-da559d24-3c83-4b1e-b8e1-f152d4a66b79' -e pulsemixer 2>/dev/null
