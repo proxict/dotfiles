@@ -1,5 +1,7 @@
 #!/bin/bash
 
 # amixer set -q Master 5.0%+ && amixer set -q Master 1+ unmute
+#pamixer -u && pamixer -i 5
 
-pamixer -u && pamixer -i 5
+pactl set-sink-mute @DEFAULT_SINK@ 0
+[ "$(get-volume)" -lt 100 ] && pactl set-sink-volume @DEFAULT_SINK@ +5%

@@ -1,5 +1,5 @@
 #!/bin/bash
 
 #amixer set -q Capture toggle
-
-pulsemixer --id $(pulsemixer --list-sources | awk '/Default/ { print $3 }' | tr -d ,) --toggle
+#pulsemixer --id $(pulsemixer --list-sources | awk '/Default/ { print $3 }' | tr -d ,) --toggle
+pactl set-source-mute @DEFAULT_SOURCE@ toggle

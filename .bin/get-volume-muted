@@ -9,4 +9,7 @@
 #	echo "error getting state"
 #fi
 
-pamixer --get-mute || true
+#pamixer --get-mute || true
+
+state="$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{print $2}')"
+{ [ "${state}" = "yes" ] && echo "true"; } || echo "false"
