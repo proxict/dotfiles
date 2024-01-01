@@ -26,13 +26,16 @@ source colors
 
 while read -r meta; do
     STATUS="$(echo "${meta}" | awk -F'>' '{ print $1 }')"
+
     ALBUM="$(echo "${meta}"  | awk -F'>' '{ print $2 }')"
     ARTIST="$(echo "${meta}" | awk -F'>' '{ print $3 }')"
     TITLE="$(echo "${meta}"  | awk -F'>' '{ print $4 }')"
 
-    NAME="${ARTIST}"
-    [ -z "${NAME}" ] && NAME="${ALBUM}"
-    TEXT="${NAME} - ${TITLE}"
+    TEXT=""
+    DELIM=""
+    [ -n "${ARTIST}" ] && TEXT="${TEXT}${DELIM}${ARTIST}" && DELIM=" - "
+    [ -n "${ALBUM}" ]  && TEXT="${TEXT}${DELIM}${ALBUM}"  && DELIM=" - "
+    [ -n "${TITLE}" ]  && TEXT="${TEXT}${DELIM}${TITLE}"  && DELIM=" - "
 
     COLOR="red"
     [ "${STATUS}" = "Playing" ] && COLOR="green"
