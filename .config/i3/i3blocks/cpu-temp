@@ -27,11 +27,13 @@ source colors
 CPU_TEMP=$(cpu-core-temp)
 CPU_MAX=${1:-100}
 
+CPU_TEMP_NATURAL="${CPU_TEMP%%.*}"
+
 LABELS=""
 
-LABEL_INDEX=$(( 4 * (CPU_TEMP + CPU_MAX / 5) / CPU_MAX ))
+LABEL_INDEX=$(( 4 * (CPU_TEMP_NATURAL + CPU_MAX / 5) / CPU_MAX ))
 LABEL=${LABELS:${LABEL_INDEX}:1}
 
-COLOR=$(interpolateColor "green" "red" $(( CPU_TEMP * 100 / CPU_MAX )) )
+COLOR=$(interpolateColor "green" "red" $(( CPU_TEMP_NATURAL * 100 / CPU_MAX )) )
 
 echo -n "${LABEL} " && colorize "${COLOR}" "${CPU_TEMP}°C"

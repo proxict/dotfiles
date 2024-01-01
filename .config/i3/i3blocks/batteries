@@ -22,16 +22,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-[ "X$(command -v acpi)" = "X" ] && echo "acpi not installed" && exit
+command -v acpi &>/dev/null || (echo "acpi not installed" && exit)
 
 source colors
 
 TOTAL_BATTERY_POWER=0
 BATTERY_INDEX=0
 CHARGING=0
-LABELS=""
+LABELS=(' ' ' ' ' ' ' ' ' ')
 while read -r battery; do
-    BATTERY_INFO=$(echo ${battery} | grep -E "Battery [0-9]+")
+    BATTERY_INFO=$(echo "${battery}" | grep -E "Battery [0-9]+")
     if [[ "X${BATTERY_INFO}" = "X" ]]; then
         echo "No batteries found on the system"
         exit 1
@@ -44,14 +44,14 @@ while read -r battery; do
         CHARGING=1
     fi
 
-    TOTAL_BATTERY_POWER=$(( TOTAL_BATTERY_POWER + ${BATTERY_POWER}))
+    TOTAL_BATTERY_POWER=$(( TOTAL_BATTERY_POWER + BATTERY_POWER ))
 
 
-    LABEL_INDEX=$(( 4 * (${BATTERY_POWER} + 20) / 100 ))
-    LABEL=${LABELS:${LABEL_INDEX}:1}
+    LABEL_INDEX=$(( 4 * (BATTERY_POWER + 20) / 100 ))
+    LABEL="${LABELS[${LABEL_INDEX}]} "
 
     if [ ${CHARGING} -eq 1 ]; then
-        LABEL="${LABEL} "
+        LABEL="${LABEL}"
     fi
 
     if [ $BATTERY_INDEX -gt 0 ]; then

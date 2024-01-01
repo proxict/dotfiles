@@ -30,8 +30,4 @@ case $BLOCK_BUTTON in
     *) ;;
 esac
 
-max=`cat /sys/class/backlight/intel_backlight/max_brightness`
-current=`cat /sys/class/backlight/intel_backlight/brightness`
-#current=`xbacklight -get`
-percent=$(awk "BEGIN { pc=100*${current}/${max}; i=int(pc); print (pc-i<0.5)?i:i+1 }")
-echo "$percent%"
+echo "$(xbacklight -get)%"
