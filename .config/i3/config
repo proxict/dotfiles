@@ -170,8 +170,8 @@ bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && pkill -S
 bindsym XF86Display exec --no-startup-id switch-screen
 
 # Screenshot
-bindsym Print exec --no-startup-id scrot -e 'mkdir -p ~/screenshots && mv $f ~/screenshots'
-bindsym $mod+Print exec --no-startup-id sleep 0.2 && scrot -s -e 'mkdir -p ~/screenshots && mv $f ~/screenshots'
+bindsym Print exec --no-startup-id scrot -e 'xclip -selection clipboard -target image/png -i $f && mkdir -p ~/screenshots && mv $f ~/screenshots'
+bindsym $mod+Print exec --no-startup-id sleep 0.2 && scrot -s -e 'xclip -selection clipboard -target image/png -i $f && mkdir -p ~/screenshots && mv $f ~/screenshots'
 
 # Dunst
 bindsym Control+space exec --no-startup-id dunstctl close
