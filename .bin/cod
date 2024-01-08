@@ -19,13 +19,15 @@ while getopts ls-: OPT; do
 done
 shift $((OPTIND-1)) # remove parsed options and args from $@ list
 
+export STAGING_RT_PRIORITY_SERVER=90
+export STAGING_RT_PRIORITY_BASE=90
 export WINEESYNC=1
 export WINEDEBUG=-all
 export STAGING_SHARED_MEMORY=1
-export STAGING_WRITECOPY=1
+export STAGING_WRITECOPY=0 # might result in higher memory usage, but avoids COW
 export DXVK_LOG_LEVEL=none
 export DXVK_ASYNC=1
-#export DXVK_HUD=pipelines
+#export DXVK_HUD=full
 LEGACY=""
 [ "${legacy}" ] && LEGACY="+set legacymode 1"
 
