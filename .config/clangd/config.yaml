@@ -1,0 +1,35 @@
+Hover:
+  ShowAKA: No
+
+Completion:
+  AllScopes: No
+
+---
+
+If:
+  PathMatch: [ .*avr/esp8266.*, .*\.platformio.* ]
+
+CompileFlags:
+  Add:
+    [
+      -mlong-calls,
+      -isysroot=/home/proxict/.platformio/packages/toolchain-xtensa/xtensa-lx106-elf/,
+      -DSSIZE_MAX,
+      -DLWIP_NO_UNISTD_H=1,
+      -Dssize_t=long,
+      -D_SSIZE_T_DECLARED,
+    ]
+  Remove:
+    [
+      -fno-tree-switch-conversion,
+      -mtext-section-literals,
+      -mlongcalls,
+      -fstrict-volatile-bitfields,
+      -free,
+      -fipa-pta,
+    ]
+Diagnostics:
+  Suppress: "pp_including_mainfile_in_preamble"
+
+---
+
