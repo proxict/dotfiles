@@ -1,0 +1,53 @@
+#!/bin/bash
+
+UEBERZUG_FIFO="$(mktemp --dry-run --suffix "fzf-$$-ueberzug")"
+export UEBERZUG_FIFO
+
+function start_ueberzug {
+    mkfifo "${UEBERZUG_FIFO}"
+    ueberzug layer --parser bash --silent <"${UEBERZUG_FIFO}" &
+    exec 3> "${UEBERZUG_FIFO}"
+}
+
+function calculate_position {
+    read -r _rows cols < <(stty size </dev/tty)
+    X=$((cols - COLUMNS - 2))
+    Y=1
+}
+
+function draw_preview {
+    calculate_position
+
+    #shellcheck disable=SC2154
+    declare -A -p cmd=( \
+        [action]=add [identifier]="preview" \
+        [x]="${X}" [y]="${Y}" \
+        [width]="${COLUMNS}" [height]="${LINES}" \
+        [path]="${@}") > "${UEBERZUG_FIFO}"
+
+        # add '[synchronously_draw]=True' if you want to see each change
+        # add '[scaler]=forced_cover [scaling_position_x]=0.5 [scaling_position_y]=0.5' if you want to force fill the preview window
+}
+
+function cleanup {
+    exec 3>&-
+    rm -f "${UEBERZUG_FIFO}" &>/dev/null
+    kill "$(jobs -p)" &>/dev/null
+}
+
+cd "${HOME}/Pictures/wallpapers" || exit 1
+
+trap cleanup EXIT SIGINT SIGQUIT
+# print the redraw key twice as there's a run condition we can't circumvent
+# (we can't know the time fzf finished redrawing it's layout)
+start_ueberzug
+
+export -f draw_preview calculate_position
+SHELL="$(which bash)"
+WALLPAPER="$(fzf \
+    --preview "draw_preview {}" \
+    --preview-window "right" \
+    --bind "ctrl-f:toggle-preview+toggle-preview" \
+)" && \
+    feh --bg-scale "${WALLPAPER}" && \
+    notify-send -- "Wallpaper updated"
