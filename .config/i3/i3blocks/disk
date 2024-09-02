@@ -14,9 +14,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-DIR="${BLOCK_INSTANCE:-$HOME}"
-ALERT_LOW="${1:-10}" # color will turn red under this value (default: 10%)
-
 source colors
 
 DIR="${1:-$HOME}"
@@ -27,7 +24,7 @@ df -h -l -P "$DIR" | awk -v low_threshold="${2:-10}" -v low_color="$(colorizeBeg
 	gsub(/%$/, "", use)
 
 	if (100 - use < low_threshold) {
-        print low_color $4 "%{F-}"
+        print low_color $4 "</span>"
     } else {
         print $4
     }
